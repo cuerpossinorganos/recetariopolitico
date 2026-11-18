@@ -3,7 +3,7 @@
 //   id        identificador único
 //   chapter   id del capítulo (ver chapters.js): da el "01 — PRÓLOGO" de arriba a la derecha
 //   month     etiqueta de abajo a la izquierda
-//   segments  bloques de texto que se "escriben" uno tras otro;
+//   segments  bloques de texto que aparecen línea por línea, subiendo;
 //             font: 'serif' (Lora cursiva, por defecto) o 'sans' (DM Sans)
 
 export const slides = [

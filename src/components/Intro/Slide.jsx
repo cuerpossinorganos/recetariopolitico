@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
-import Typewriter from './Typewriter'
+import LineReveal from './LineReveal'
 
-// Una slide: el texto se escribe solo; al salir se desvanece.
+// Una slide: el texto sube línea por línea; al salir se desvanece.
 export default function Slide({ slide, skip, onDone }) {
   return (
     <motion.div
@@ -10,7 +10,7 @@ export default function Slide({ slide, skip, onDone }) {
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       exit={{ opacity: 0, filter: 'blur(6px)', transition: { duration: 0.45 } }}
     >
-      <Typewriter segments={slide.segments} skip={skip} onDone={onDone} />
+      <LineReveal segments={slide.segments} skip={skip} onDone={onDone} />
     </motion.div>
   )
 }

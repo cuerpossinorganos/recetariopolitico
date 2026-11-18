@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import logo from '../../assets/logo.png'
 import { copy } from '../../data/copy'
-import Logo from '../ui/Logo'
+import SwayingLogo from '../ui/SwayingLogo'
 import './Gate.css'
 
 // Duración mínima de la "carga": la pantalla se queda lo justo para que
@@ -68,7 +68,7 @@ export default function Gate({ onEnter }) {
       transition={{ duration: 0.8 }}
     >
       <h1 className="gate__logo-wrap">
-        <Logo className="gate__logo" />
+        <SwayingLogo className="gate__logo" />
       </h1>
 
       <div className="gate__footer">

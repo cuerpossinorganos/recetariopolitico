@@ -19,8 +19,8 @@ const pad = (n) => String(n).padStart(2, '0')
 
 export default function Intro({ sound, onFinish }) {
   const [index, setIndex] = useState(0)
-  const [typed, setTyped] = useState(false) // el texto ya se terminó de escribir
-  const [skip, setSkip] = useState(false) // pedir que termine de escribirse
+  const [typed, setTyped] = useState(false) // el texto ya terminó de aparecer
+  const [skip, setSkip] = useState(false) // pedir que se muestre completo
   const [menuOpen, setMenuOpen] = useState(false)
 
   const lastMove = useRef(-Infinity)
@@ -39,7 +39,7 @@ export default function Intro({ sound, onFinish }) {
 
   const handleTyped = useCallback(() => setTyped(true), [])
 
-  // Avanzar: si el texto aún se escribe, primero lo completa; después pasa a la siguiente.
+  // Avanzar: si el texto aún está apareciendo, primero lo muestra completo; después pasa a la siguiente.
   const advance = useCallback(() => {
     const now = performance.now()
     if (menuOpen || now - lastMove.current < LOCK_MS) return

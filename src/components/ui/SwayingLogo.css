@@ -1,0 +1,24 @@
+/* El logo quieto da el tamaño; el canvas animado se superpone exactamente encima
+   (en posición absoluta para no influir en el tamaño) y, cuando está listo,
+   reemplaza al quieto. */
+.sway {
+  position: relative;
+  display: block;
+  color: var(--cream);
+}
+
+.sway__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.sway.is-active .sway__canvas {
+  opacity: 1;
+}
+
+.sway.is-active .sway__still {
+  visibility: hidden;
+}
