@@ -1,16 +1,34 @@
-# React + Vite
+# Recetario Político
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Sitio web de storytelling hecho con React + Vite. Al entrar hay una intro interactiva (clic para pasar de slide) y, al terminarla, se accede a la página de inicio con la historia completa.
 
-Currently, two official plugins are available:
+## Desarrollo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev     # servidor local
+npm run build   # build de producción
+npm run lint
+```
 
-## React Compiler
+## Estructura
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/data/slides.js`: textos de cada slide de la intro (mes, capítulo y bloques de texto).
+- `src/data/chapters.js`: índice del libro que se muestra en el menú tipo ticket.
+- `src/data/copy.js`: textos de interfaz (botones, pistas).
+- `src/components/Intro/`: pantalla de carga/entrada (`Gate`), motor de slides (`Intro`), slide (`Slide`) y efecto de escritura (`Typewriter`).
+- `src/components/Menu/`: menú de capítulos en forma de ticket.
+- `src/components/Home/`: página de inicio (provisoria).
+- `src/audio/` y `src/hooks/useAmbientSound.js`: sonido ambiente.
+- `src/assets/logo.png`: logo (PNG con transparencia); se pinta con CSS del color que haga falta.
 
-## Expanding the Oxlint configuration
+Etapas en `src/App.jsx`: `gate` → `intro` → `home`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Diseño
+
+- Tipografías: Lora (OFL) y DM Sans, empaquetadas con `@fontsource-variable`.
+- Paleta: fondo `#593e0f`, cuadrícula `#4b350c`, crema `#f6dea0`, marrón del menú `#584038`.
+
+## Controles de la intro
+
+Clic o toque en cualquier parte, rueda del mouse, deslizar, o teclado (espacio, Enter, flechas). Si el texto aún se escribe, el primer gesto lo completa y el siguiente avanza. Flecha izquierda o deslizar hacia abajo vuelve atrás.

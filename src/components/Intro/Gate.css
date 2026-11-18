@@ -1,0 +1,85 @@
+.gate {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--cream);
+}
+
+.gate__logo-wrap {
+  /* El trazo ocupa ~87% del PNG: 78vw de imagen = ~68vw de logo, como en el mockup */
+  width: min(78vw, 1250px);
+  margin-top: -4vh;
+}
+
+.gate__logo {
+  width: 100%;
+}
+
+.gate__footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(1.5rem, 5.4vw, 4rem);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  padding: 0 var(--gutter);
+  font-size: var(--ui-size);
+  font-style: italic;
+}
+
+.gate__pct {
+  font-style: normal;
+  font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.gate__center {
+  min-width: 1px;
+  text-align: center;
+}
+
+.gate__center button,
+.gate__muted {
+  padding-block: 0.3em;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.gate__center button:hover,
+.gate__muted:hover {
+  border-color: var(--cream);
+}
+
+.gate__muted {
+  justify-self: end;
+}
+
+.gate__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(0.75rem, 2.4vw, 3rem);
+  height: 3px;
+  background: rgba(246, 222, 160, 0.25);
+}
+
+.gate__bar i {
+  display: block;
+  height: 100%;
+  background: var(--cream);
+  transform-origin: left;
+}
+
+@media (max-width: 720px) {
+  .gate__footer {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1.25rem;
+  }
+
+  .gate__center {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+}

@@ -1,0 +1,132 @@
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(22, 14, 3, 0.62);
+  backdrop-filter: blur(2px);
+  cursor: default;
+}
+
+/* Ticket perforado: muescas laterales y línea de puntos recortadas con máscara */
+.ticket {
+  --cut: 14.2rem; /* altura del corte desde arriba */
+  --r: 1rem; /* radio de las muescas */
+  --dash: 1.15rem;
+  --gap: 0.7rem;
+  --thick: 0.2rem;
+
+  position: absolute;
+  top: 1rem;
+  right: clamp(1rem, 4vw, 5rem);
+  width: min(26rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  background: var(--cream);
+  color: var(--ink);
+  outline: none;
+
+  mask-image:
+    linear-gradient(#000 0 0),
+    radial-gradient(circle var(--r) at 0 var(--cut), #000 calc(100% - 0.5px), transparent 100%),
+    radial-gradient(circle var(--r) at 100% var(--cut), #000 calc(100% - 0.5px), transparent 100%),
+    repeating-linear-gradient(
+      90deg,
+      #000 0 var(--dash),
+      transparent var(--dash) calc(var(--dash) + var(--gap))
+    );
+  mask-size: 100% 100%, 100% 100%, 100% 100%, 100% var(--thick);
+  mask-position: 0 0, 0 0, 0 0, 0 calc(var(--cut) - var(--thick) / 2);
+  mask-repeat: no-repeat;
+  mask-composite: subtract, add, add, add;
+}
+
+.ticket__top {
+  height: var(--cut);
+  padding: 1.6rem 1.8rem 0;
+}
+
+.ticket__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.ticket__logo {
+  width: 96%;
+  margin: 0.4rem 0 0 -3%;
+  color: var(--ink);
+}
+
+.ticket__list {
+  list-style: none;
+  padding: 2.2rem 1.8rem 3rem;
+}
+
+.ticket__list > li + li {
+  margin-top: 0.15rem;
+}
+
+.ticket__chapter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 0.15rem 0;
+  text-align: left;
+}
+
+.ticket__chapter:disabled {
+  cursor: default;
+}
+
+.ticket__chapter:focus-visible {
+  outline-color: var(--ink);
+}
+
+.ticket__num {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  min-width: 1.5rem;
+}
+
+.ticket__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+
+.ticket__chapter:not(:disabled):hover .ticket__title,
+.ticket__chapter[aria-current='true'] .ticket__title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+.ticket__items {
+  list-style: none;
+  margin: 0.55rem 0 0.9rem 2.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.ticket__items li + li {
+  margin-top: 0.62rem;
+}
+
+/* Capítulos todavía no alcanzados */
+.is-locked {
+  opacity: 0.45;
+}
+
+@media (max-width: 720px) {
+  .ticket {
+    right: 1rem;
+  }
+}

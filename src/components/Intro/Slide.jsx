@@ -1,0 +1,16 @@
+import { motion } from 'motion/react'
+import Typewriter from './Typewriter'
+
+// Una slide: el texto se escribe solo; al salir se desvanece.
+export default function Slide({ slide, skip, onDone }) {
+  return (
+    <motion.div
+      className="slide"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+      exit={{ opacity: 0, filter: 'blur(6px)', transition: { duration: 0.45 } }}
+    >
+      <Typewriter segments={slide.segments} skip={skip} onDone={onDone} />
+    </motion.div>
+  )
+}
