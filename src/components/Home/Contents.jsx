@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { contents } from '../../data/contents'
 import RecipeBrowser from './RecipeBrowser'
+import SobremesaBrowser from './SobremesaBrowser'
 import TinBrowser from './TinBrowser'
 import './Contents.css'
 
@@ -252,10 +253,13 @@ export default function Contents() {
             transition={{ duration: 0.28, ease: 'easeOut' }}
           >
             {tab.heading && <h3 className="panel__heading">{tab.heading}</h3>}
+            {tab.subtitle && <p className="panel__sub">{tab.subtitle}</p>}
             {tab.kind === 'recipes' ? (
               <RecipeBrowser />
             ) : tab.kind === 'tin' ? (
               <TinBrowser />
+            ) : tab.kind === 'sobremesa' ? (
+              <SobremesaBrowser />
             ) : tab.items.length > 0 ? (
               <ul className="panel__list">
                 {tab.items.map((item) => (

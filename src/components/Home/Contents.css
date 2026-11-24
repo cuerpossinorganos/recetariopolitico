@@ -326,8 +326,18 @@
 }
 
 .panel--recipes .panel__heading,
-.panel--tin .panel__heading {
+.panel--tin .panel__heading,
+.panel--sobremesa .panel__heading {
   margin-bottom: calc(var(--u) * 14);
+}
+
+.panel__sub {
+  margin: calc(var(--u) * -6) 0 calc(var(--u) * 20);
+  font-family: var(--font-sans);
+  font-size: max(0.9rem, calc(var(--u) * 19));
+  line-height: 1.3;
+  color: var(--c-text);
+  transition: color 0.7s ease;
 }
 
 .panel__list {

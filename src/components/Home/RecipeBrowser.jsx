@@ -4,17 +4,21 @@ import { cards } from '../../data/cards'
 import CardViewer from './CardViewer'
 import './RecipeBrowser.css'
 
-// Las recetas dentro de la zona Contenido: una fila de categorías (una por planta) que filtra
-// las cards, y debajo las cards. Al elegir una categoría queda solo su receta; al tocar la card
-// se voltea y se amplía para leer su historia (el mismo visor que usan las cards de la mesa).
-export default function RecipeBrowser() {
+// Las cards dentro de la zona Contenido: una fila de categorías (una por card) que las filtra,
+// y debajo las cards. Al elegir una categoría queda solo su card; al tocarla se voltea y se
+// amplía para leer su historia (el mismo visor que usan las cards de la mesa).
+// Sirve para las recetas (de día) y para las historias de Sobremesa (de noche):
+//   items     las cards; cada una trae { id, number, title, image, chip?, plant?, ratio? }
+//   sheetOf   (card) => hoja de atrás; sin ella se usa la historia de la receta
+//   noun      cómo se llaman en los avisos de lectura ("receta", "historia")
+export default function RecipeBrowser({ items = cards, sheetOf, noun = 'receta' }) {
   const reduce = useReducedMotion()
   const [filter, setFilter] = useState(null) // id de la card elegida o null = todas
   const [open, setOpen] = useState(null) // { card, origin }
   const [liftedId, setLiftedId] = useState(null)
 
-  const visible = filter ? cards.filter((c) => c.id === filter) : cards
-  const selected = filter ? cards.find((c) => c.id === filter) : null
+  const visible = filter ? items.filter((c) => c.id === filter) : items
+  const selected = filter ? items.find((c) => c.id === filter) : null
 
   const toggle = (id) => setFilter((current) => (current === id ? null : id))
 
@@ -34,8 +38,8 @@ export default function RecipeBrowser() {
 
   return (
     <div className="rb">
-      <div className="rb__chips" role="group" aria-label="Filtrar las recetas por categoría">
-        {cards.map((card) => (
+      <div className="rb__chips" role="group" aria-label={`Filtrar las ${noun}s por categoría`}>
+        {items.map((card) => (
           <button
             key={card.id}
             type="button"
@@ -43,7 +47,7 @@ export default function RecipeBrowser() {
             aria-pressed={filter === card.id}
             onClick={() => toggle(card.id)}
           >
-            {card.plant}
+            {card.chip ?? card.plant}
           </button>
         ))}
       </div>
@@ -59,7 +63,9 @@ export default function RecipeBrowser() {
             </button>
           </>
         ) : (
-          <span className="sr-only">Mostrando las {cards.length} recetas</span>
+          <span className="sr-only">
+            Mostrando las {items.length} {noun}s
+          </span>
         )}
       </p>
 
@@ -78,7 +84,7 @@ export default function RecipeBrowser() {
               <button
                 type="button"
                 className={`rb__card${liftedId === card.id ? ' is-lifted' : ''}`}
-                aria-label={`Leer la receta ${card.number}: ${card.title}`}
+                aria-label={`Leer la ${noun} ${card.number}: ${card.title}`}
                 onClick={(e) => handleOpen(card, e.currentTarget)}
               >
                 <img src={card.image} alt="" draggable={false} />
@@ -93,6 +99,7 @@ export default function RecipeBrowser() {
           <CardViewer
             key={open.card.id}
             card={open.card}
+            sheet={sheetOf?.(open.card)}
             origin={open.origin}
             onClose={() => setOpen(null)}
           />

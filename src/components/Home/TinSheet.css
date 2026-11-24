@@ -1,7 +1,8 @@
-/* Hoja de un objeto de la lata. Reutiliza el papel y el encabezado de StoryPaper.css. */
+/* Hoja de un objeto de la lata. Reutiliza el papel, el encabezado y los colores de StoryPaper.css
+   (1 unidad = 1/1628 del ancho de la hoja). */
 
 .tin-sheet .story__in {
-  /* llena la pantalla aunque todavía tenga poco texto (el grano de papel cubre toda la hoja) */
+  /* llena la pantalla aunque tenga poco texto (el grano de papel cubre toda la hoja) */
   min-height: calc(100dvh - var(--sheet-top, 14px) * 2);
 }
 
@@ -13,17 +14,318 @@
   margin-left: calc(122 * var(--u));
 }
 
-.tin-sheet__body {
-  padding: calc(80 * var(--u)) calc(130 * var(--u)) 0 calc(122 * var(--u));
+/* Los subtítulos largos se parten parejo en vez de dejar una palabra sola */
+.tin-sheet__head .story__subtitle {
+  text-wrap: balance;
+  line-height: 1.06;
+  margin-right: calc(130 * var(--u));
 }
 
-.tin-sheet__pending {
+.tin-sheet__body {
+  padding: calc(84 * var(--u)) calc(190 * var(--u)) 0 calc(122 * var(--u));
+}
+
+/* ---------- Texto corrido ---------- */
+
+.tin-sheet__p {
+  font-size: calc(30 * var(--u));
+  line-height: 1.32;
+  letter-spacing: -0.008em;
+  word-spacing: -0.045em;
+  text-align: justify;
+}
+
+.tin-sheet__p + .tin-sheet__p {
+  margin-top: calc(26 * var(--u));
+}
+
+/* ---------- Lista de objetos (Utensilios) ---------- */
+
+.tin-sheet__group + .tin-sheet__group {
+  margin-top: calc(78 * var(--u));
+}
+
+.tin-sheet__group .story__label {
+  margin-bottom: calc(26 * var(--u));
+}
+
+.tin-sheet__list {
+  list-style: none;
+}
+
+.tin-sheet__list li {
+  font-size: calc(30 * var(--u));
+  line-height: 1.3;
+  letter-spacing: -0.008em;
+  word-spacing: -0.045em;
+}
+
+.tin-sheet__list li + li {
+  margin-top: calc(15 * var(--u));
+}
+
+/* ---------- Entradas con definición (Técnicas) ---------- */
+
+.tin-sheet__entry + .tin-sheet__entry {
+  margin-top: calc(84 * var(--u));
+}
+
+.tin-sheet__entry-title {
   font-family: var(--font-serif);
-  font-style: italic;
-  font-size: calc(46 * var(--u));
+  font-weight: 600;
+  font-size: calc(56 * var(--u));
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.tin-sheet__gloss {
+  margin: calc(8 * var(--u)) 0 calc(26 * var(--u));
+  font-size: calc(24.5 * var(--u));
   line-height: 1.3;
   color: var(--ink);
 }
+
+/* ---------- Diccionario ---------- */
+
+.tin-sheet__body > .tin-sheet__p:first-child {
+  margin-bottom: calc(14 * var(--u));
+}
+
+.tin-sheet__word {
+  margin-top: calc(66 * var(--u));
+}
+
+.tin-sheet__word-box {
+  padding: calc(34 * var(--u)) calc(42 * var(--u)) calc(40 * var(--u));
+  background: var(--box);
+}
+
+.tin-sheet__word-box h3 {
+  margin: 0 0 calc(12 * var(--u));
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: calc(48 * var(--u));
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.tin-sheet__form {
+  font-size: calc(29 * var(--u));
+  line-height: 1.25;
+}
+
+.tin-sheet__origin {
+  margin-top: calc(4 * var(--u));
+  font-size: calc(24 * var(--u));
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.tin-sheet__senses {
+  margin-top: calc(14 * var(--u));
+  font-size: calc(29 * var(--u));
+  line-height: 1.32;
+  letter-spacing: -0.008em;
+  word-spacing: -0.045em;
+}
+
+.tin-sheet__notes {
+  list-style: none;
+  margin-top: calc(30 * var(--u));
+}
+
+.tin-sheet__notes li {
+  display: grid;
+  grid-template-columns: calc(96 * var(--u)) minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.tin-sheet__notes li + li {
+  margin-top: calc(22 * var(--u));
+}
+
+.tin-sheet__note-n {
+  font-size: calc(26 * var(--u));
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  opacity: 0.8;
+}
+
+.tin-sheet__notes p {
+  font-size: calc(29 * var(--u));
+  line-height: 1.32;
+  letter-spacing: -0.008em;
+  word-spacing: -0.045em;
+}
+
+/* ---------- Planos ---------- */
+
+.tin-sheet__plan {
+  /* los planos tienen letra chica: se les da más ancho que al texto */
+  margin-right: calc(-120 * var(--u));
+}
+
+.tin-sheet__plan + .tin-sheet__plan {
+  margin-top: calc(130 * var(--u));
+}
+
+.tin-sheet__plan-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: calc(52 * var(--u));
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.tin-sheet__hint {
+  display: none;
+}
+
+.tin-sheet__figure {
+  margin-top: calc(34 * var(--u));
+}
+
+.tin-sheet__figure img {
+  display: block;
+  width: min(100%, calc(1420 * var(--u)));
+  height: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tin-sheet__plan figcaption {
+  margin-top: calc(38 * var(--u));
+  max-width: calc(1240 * var(--u));
+}
+
+.tin-sheet__plan figcaption p {
+  font-size: calc(28 * var(--u));
+  line-height: 1.32;
+}
+
+.tin-sheet__plan figcaption p + p {
+  margin-top: calc(18 * var(--u));
+}
+
+/* ---------- Sobremesa: versiones, formulario y diálogo ---------- */
+
+.tin-sheet__versions {
+  list-style: none;
+}
+
+.tin-sheet__versions li {
+  display: grid;
+  grid-template-columns: calc(70 * var(--u)) minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.tin-sheet__versions li + li {
+  margin-top: calc(26 * var(--u));
+}
+
+.tin-sheet__version-n {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: calc(32 * var(--u));
+  color: var(--ink);
+}
+
+.tin-sheet__versions p {
+  font-size: calc(30 * var(--u));
+  line-height: 1.32;
+}
+
+.tin-sheet__versions code {
+  font-size: 0.95em;
+  color: var(--hand);
+}
+
+.tin-sheet__form-wrap {
+  margin-top: calc(110 * var(--u));
+}
+
+.tin-sheet__caption {
+  font-size: calc(30 * var(--u));
+  color: var(--text);
+}
+
+.tin-sheet__part {
+  margin-top: calc(70 * var(--u));
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: calc(46 * var(--u));
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.tin-sheet__caption + .tin-sheet__part {
+  margin-top: calc(58 * var(--u));
+}
+
+.tin-sheet__part--solo {
+  margin-top: calc(120 * var(--u));
+}
+
+.tin-sheet__form {
+  margin-top: calc(24 * var(--u));
+  padding: calc(34 * var(--u)) calc(42 * var(--u)) calc(40 * var(--u));
+  background: var(--box);
+}
+
+.tin-sheet__form p {
+  font-size: calc(29 * var(--u));
+  line-height: 1.3;
+}
+
+.tin-sheet__form p + p {
+  margin-top: calc(20 * var(--u));
+}
+
+.tin-sheet__check {
+  display: flex;
+  align-items: baseline;
+  gap: calc(12 * var(--u));
+}
+
+.tin-sheet__box {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+.tin-sheet__fill {
+  flex: 0 1 calc(620 * var(--u));
+  align-self: flex-end;
+  height: 0;
+  margin-bottom: 0.2em;
+  border-bottom: calc(1.9 * var(--u)) solid var(--ink);
+}
+
+.tin-sheet__dialogue {
+  margin-top: calc(24 * var(--u));
+}
+
+.tin-sheet__dir {
+  font-size: calc(28 * var(--u));
+  line-height: 1.32;
+  font-style: italic;
+  color: var(--text);
+}
+
+.tin-sheet__line {
+  margin: calc(18 * var(--u)) 0 0 calc(54 * var(--u));
+  font-size: calc(32 * var(--u));
+  line-height: 1.3;
+}
+
+.tin-sheet__dir + .tin-sheet__line {
+  margin-top: calc(34 * var(--u));
+}
+
+.tin-sheet__line + .tin-sheet__dir {
+  margin-top: calc(34 * var(--u));
+}
+
+/* ---------- Pantallas angostas: una sola columna ---------- */
 
 @container (max-width: 880px) {
   .tin-sheet__head {
@@ -38,7 +340,176 @@
     padding: 8cqw var(--pad) 0;
   }
 
-  .tin-sheet__pending {
-    font-size: clamp(18px, 5.4cqw, 24px);
+  .tin-sheet__p,
+  .tin-sheet__list li,
+  .tin-sheet__senses,
+  .tin-sheet__notes p,
+  .tin-sheet__form {
+    font-size: clamp(15px, 4.2cqw, 18px);
+  }
+
+  .tin-sheet__p {
+    text-align: left;
+  }
+
+  .tin-sheet__p + .tin-sheet__p {
+    margin-top: 1.1em;
+  }
+
+  .tin-sheet__group + .tin-sheet__group {
+    margin-top: 9cqw;
+  }
+
+  .tin-sheet__group .story__label {
+    margin-bottom: 3.6cqw;
+  }
+
+  .tin-sheet__list li + li {
+    margin-top: 0.7em;
+  }
+
+  .tin-sheet__entry + .tin-sheet__entry {
+    margin-top: 10cqw;
+  }
+
+  .tin-sheet__entry-title {
+    font-size: clamp(26px, 8cqw, 36px);
+  }
+
+  .tin-sheet__gloss {
+    margin: 1.2cqw 0 3.6cqw;
+    font-size: clamp(13px, 3.5cqw, 15px);
+  }
+
+  .tin-sheet__word {
+    margin-top: 8cqw;
+  }
+
+  .tin-sheet__word-box {
+    padding: 5cqw 5.5cqw 6cqw;
+  }
+
+  .tin-sheet__word-box h3 {
+    font-size: clamp(24px, 7.2cqw, 32px);
+  }
+
+  .tin-sheet__origin {
+    font-size: clamp(12px, 3.3cqw, 14px);
+  }
+
+  .tin-sheet__notes {
+    margin-top: 4.5cqw;
+  }
+
+  .tin-sheet__notes li {
+    grid-template-columns: 11cqw minmax(0, 1fr);
+  }
+
+  .tin-sheet__notes li + li {
+    margin-top: 3.6cqw;
+  }
+
+  .tin-sheet__note-n {
+    font-size: clamp(12px, 3.3cqw, 14px);
+  }
+
+  .tin-sheet__versions li {
+    grid-template-columns: 8cqw minmax(0, 1fr);
+  }
+
+  .tin-sheet__versions li + li {
+    margin-top: 3.4cqw;
+  }
+
+  .tin-sheet__version-n {
+    font-size: clamp(16px, 4.6cqw, 20px);
+  }
+
+  .tin-sheet__versions p,
+  .tin-sheet__caption {
+    font-size: clamp(15px, 4.2cqw, 18px);
+  }
+
+  .tin-sheet__form-wrap {
+    margin-top: 12cqw;
+  }
+
+  .tin-sheet__part {
+    margin-top: 8cqw;
+    font-size: clamp(22px, 6.4cqw, 28px);
+  }
+
+  .tin-sheet__part--solo {
+    margin-top: 14cqw;
+  }
+
+  .tin-sheet__form {
+    padding: 5cqw 5.5cqw 6cqw;
+  }
+
+  .tin-sheet__form p {
+    font-size: clamp(14px, 4cqw, 17px);
+  }
+
+  .tin-sheet__form p + p {
+    margin-top: 3.4cqw;
+  }
+
+  .tin-sheet__fill {
+    flex-basis: 50cqw;
+  }
+
+  .tin-sheet__dir {
+    font-size: clamp(14px, 3.9cqw, 16px);
+  }
+
+  .tin-sheet__line {
+    margin-left: 5cqw;
+    font-size: clamp(16px, 4.5cqw, 19px);
+  }
+
+  .tin-sheet__plan {
+    margin-right: 0;
+  }
+
+  .tin-sheet__plan + .tin-sheet__plan {
+    margin-top: 12cqw;
+  }
+
+  .tin-sheet__head .story__subtitle {
+    margin-right: 0;
+  }
+
+  .tin-sheet__plan-title {
+    font-size: clamp(22px, 6.6cqw, 30px);
+  }
+
+  .tin-sheet__hint {
+    display: block;
+    margin-top: 1.6cqw;
+    font-size: clamp(12px, 3.2cqw, 14px);
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  /* El plano conserva su tamaño legible y se recorre con el dedo hacia los costados */
+  .tin-sheet__figure {
+    margin: 3cqw calc(-1 * var(--pad)) 0;
+    padding: 0 var(--pad) 3cqw;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .tin-sheet__figure img {
+    width: max(100%, 640px);
+  }
+
+  .tin-sheet__plan figcaption {
+    margin-top: 4cqw;
+  }
+
+  .tin-sheet__plan figcaption p {
+    font-size: clamp(14px, 3.8cqw, 16px);
   }
 }

@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import Rich from './Rich'
 import './StoryPaper.css'
 
 // Pequeñas diferencias de posición de los números de los pasos, como si estuvieran
@@ -14,19 +14,6 @@ const NUMERAL_JITTER = [
 ]
 
 const pad = (n) => String(n).padStart(2, '0')
-
-// Texto con formato mínimo: **negrita**, *cursiva*, `monoespaciado` y ___ (espacio en blanco).
-const INLINE = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|___)/g
-
-function Rich({ text }) {
-  return text.split(INLINE).map((part, i) => {
-    if (part === '___') return <span key={i} className="story__blank" aria-hidden="true" />
-    if (part.startsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>
-    if (part.startsWith('*')) return <em key={i}>{part.slice(1, -1)}</em>
-    if (part.startsWith('`')) return <code key={i}>{part.slice(1, -1)}</code>
-    return <Fragment key={i}>{part}</Fragment>
-  })
-}
 
 function MapIcon() {
   return (

@@ -114,3 +114,17 @@
     gap: 1.4rem 1rem;
   }
 }
+
+/* De noche las sombras claras no se ven sobre el fondo oscuro: se hacen más hondas */
+.contents[data-mode='night'] .rb__card {
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55)) drop-shadow(0 12px 16px rgba(0, 0, 0, 0.5));
+}
+
+.contents[data-mode='night'] .rb__card:hover,
+.contents[data-mode='night'] .rb__card:focus-visible {
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.55)) drop-shadow(0 22px 24px rgba(0, 0, 0, 0.6));
+}
+
+.contents[data-mode='night'] .rb__card:focus-visible {
+  outline-color: var(--c-title);
+}

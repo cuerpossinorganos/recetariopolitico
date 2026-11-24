@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence } from 'motion/react'
+import { lata } from '../../data/lata'
 import { TIN_ITEMS, TIN_CHIP_ORDER } from '../../data/tin'
 import CardViewer from './CardViewer'
 import Tin from './Tin'
@@ -84,11 +85,11 @@ export default function TinBrowser() {
             key={viewer.item.id}
             card={{
               id: viewer.item.id,
-              title: viewer.item.title,
+              title: lata[viewer.item.id].title,
               image: viewer.item.face.image,
               ratio: viewer.item.face.ratio,
             }}
-            sheet={<TinSheet title={viewer.item.title} />}
+            sheet={<TinSheet sheet={lata[viewer.item.id]} />}
             origin={viewer.origin}
             onClose={() => setViewer(null)}
           />
