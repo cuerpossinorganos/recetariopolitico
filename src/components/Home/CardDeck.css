@@ -117,3 +117,82 @@
 .deck__slot:hover .deck__sheen {
   opacity: 1;
 }
+
+/* ---------- Aviso de que el abanico se puede recorrer ---------- */
+
+.deck__hint {
+  position: absolute;
+  z-index: 60;
+  left: var(--cx);
+  /* justo debajo de la card del centro */
+  top: calc(var(--cy) + var(--card-w) / 0.507 / 2 + var(--vw) * 70);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.55em 1.2em;
+  border-radius: 999px;
+  background: rgba(60, 47, 16, 0.78);
+  box-shadow: 0 6px 16px rgba(20, 12, 0, 0.3);
+  backdrop-filter: blur(3px);
+  color: #f3e3af;
+  font-family: var(--font-sans);
+  font-size: clamp(0.78rem, 1.05vw, 1.25rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  translate: -50% 0;
+}
+
+.deck__hint-arrow {
+  width: 1.9em;
+  height: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: deck-hint-arrow 2s ease-in-out infinite;
+}
+
+.deck__hint-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .deck__hint-mouse {
+    display: none;
+  }
+
+  .deck__hint-touch {
+    display: inline;
+  }
+}
+
+@keyframes deck-hint-arrow {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-0.45em);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck__hint-arrow {
+    animation: none;
+  }
+}
+
+@media (max-width: 860px) {
+  /* En el celular el aviso va a la izquierda, para no quedar encima de los lentes */
+  .deck__hint {
+    left: 4vw;
+    translate: 0 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    padding: 0.5em 1em;
+  }
+}

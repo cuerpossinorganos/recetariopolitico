@@ -46,11 +46,14 @@
   margin-top: 1.2em;
 }
 
-.about-page__pending {
+/* La frase de arriba: la misma que abre el bloque del inicio, en la letra de los títulos */
+.about-page__body .about-page__lead {
+  margin-bottom: 1.1em;
   font-family: var(--font-serif);
-  font-style: italic;
-  text-align: center;
-  color: rgba(255, 242, 210, 0.78);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.35vw, 3.2rem);
+  line-height: 1.22;
+  color: #fff6d8;
 }
 
 .about-page__back {

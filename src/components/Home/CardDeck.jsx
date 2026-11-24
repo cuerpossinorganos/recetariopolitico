@@ -16,7 +16,10 @@ import './CardDeck.css'
 // y suben. Al arrastrar, el abanico "rueda": cada card toma la postura de su lugar.
 //
 // n = distancia de la card al centro, en separaciones entre cards (0 = centro).
-const CENTER = 2 // índice de la card que descansa en el centro
+const CENTER = 2 // índice de la card que descansa en el centro del abanico
+const FIRST = 0 // card que se ve primero, en el centro: la 001. Las demás quedan a su derecha
+const NUDGE_EVERY = 2000 // cada cuántos ms el abanico se mueve solo para avisar que se puede arrastrar
+const NUDGE_SHIFT = 0.3 // cuánto se corre, en separaciones entre cards
 const MAX_N = 3.2
 
 // Inclinación en grados: las de la izquierda se inclinan a la derecha y viceversa.
@@ -160,7 +163,11 @@ export default function CardDeck({ cards }) {
   const [limits, setLimits] = useState({ min: 0, max: 0 })
   const [open, setOpen] = useState(null) // { card, origin }
   const [liftedId, setLiftedId] = useState(null)
+  const [hint, setHint] = useState(true) // el aviso de "arrastra" se ve hasta que alguien recorre las cards
   const wheelTimer = useRef(null)
+  const inView = useRef(false) // el abanico está a la vista
+  const overCard = useRef(false) // el puntero está sobre una card
+  const nudging = useRef(false) // el movimiento de aviso está en curso
 
   // Medidas reales: el tamaño de la card y la separación vienen del CSS
   useEffect(() => {
@@ -168,14 +175,27 @@ export default function CardDeck({ cards }) {
     const observer = new ResizeObserver(() => {
       const cw = deck.querySelector('.deck__slot')?.offsetWidth ?? 0
       const ratio = parseFloat(getComputedStyle(deck).getPropertyValue('--pitch-ratio')) || 1.37
+      if (!cw) return
       const p = cw * ratio
+      const before = pitch.get()
       cardW.set(cw)
       pitch.set(p)
       setLimits({ min: -(cards.length - 1 - CENTER) * p, max: CENTER * p })
+      // La primera vez, la card FIRST queda en el centro; al cambiar de tamaño se conserva la posición
+      x.set(before ? (x.get() / before) * p : (CENTER - FIRST) * p)
     })
     observer.observe(deck)
     return () => observer.disconnect()
-  }, [cards.length, cardW, pitch])
+  }, [cards.length, cardW, pitch, x])
+
+  // Solo se avisa mientras el abanico se ve en pantalla
+  useEffect(() => {
+    const io = new IntersectionObserver(([entry]) => {
+      inView.current = entry.isIntersecting
+    }, { threshold: 0.35 })
+    io.observe(deckRef.current)
+    return () => io.disconnect()
+  }, [])
 
   const clampX = (value) => Math.min(limits.max, Math.max(limits.min, value))
 
@@ -193,9 +213,39 @@ export default function CardDeck({ cards }) {
     glideTo(snapTo(x.get() + info.velocity.x * 0.2))
   }
 
+  // Si el aviso se está moviendo y alguien toca el abanico, vuelve a su lugar de inmediato
+  const settle = () => {
+    if (!nudging.current) return
+    nudging.current = false
+    glideTo(snapTo(x.get()))
+  }
+
+  // Cada 2 segundos, un movimiento lento hacia la izquierda y de vuelta: así se entiende que el
+  // abanico se puede recorrer. Se detiene cuando alguien lo arrastra, y se pausa mientras hay una
+  // card abierta, el puntero está sobre una card, la pestaña está oculta o el abanico no se ve.
+  useEffect(() => {
+    if (reduce || !hint || open) return undefined
+    const id = window.setInterval(() => {
+      if (!inView.current || overCard.current || document.hidden || nudging.current) return
+      if (x.isAnimating() || !pitch.get()) return
+      const from = x.get()
+      nudging.current = true
+      animate(x, [from, from - pitch.get() * NUDGE_SHIFT, from], {
+        duration: 1.15,
+        ease: 'easeInOut',
+        onComplete: () => {
+          nudging.current = false
+        },
+      })
+    }, NUDGE_EVERY)
+    return () => window.clearInterval(id)
+  }, [reduce, hint, open, x, pitch])
+
   // Trackpad: el gesto horizontal recorre las cards y al soltar se acomodan
   const handleWheel = (e) => {
     if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
+    nudging.current = false
+    setHint(false)
     x.stop()
     x.set(clampX(x.get() - e.deltaX))
     window.clearTimeout(wheelTimer.current)
@@ -206,6 +256,8 @@ export default function CardDeck({ cards }) {
 
   // Con teclado, la card enfocada pasa al centro
   const handleFocusVisible = (index) => {
+    nudging.current = false
+    setHint(false)
     glideTo(clampX(-(index - CENTER) * pitch.get()))
   }
 
@@ -227,7 +279,20 @@ export default function CardDeck({ cards }) {
   }
 
   return (
-    <div className="deck" ref={deckRef} onWheel={handleWheel}>
+    <div
+      className="deck"
+      ref={deckRef}
+      onWheel={handleWheel}
+      onPointerDown={settle}
+      onPointerMove={(e) => {
+        const over = Boolean(e.target.closest?.('.deck__slot'))
+        overCard.current = over
+        if (over) settle()
+      }}
+      onPointerLeave={() => {
+        overCard.current = false
+      }}
+    >
       <motion.ul
         className="deck__track"
         style={{ x }}
@@ -235,7 +300,11 @@ export default function CardDeck({ cards }) {
         dragConstraints={{ left: limits.min, right: limits.max }}
         dragElastic={0.12}
         dragMomentum={false}
-        onDragStart={() => x.stop()}
+        onDragStart={() => {
+          nudging.current = false
+          setHint(false)
+          x.stop()
+        }}
         onDragEnd={handleDragEnd}
       >
         {cards.map((card, i) => (
@@ -253,6 +322,25 @@ export default function CardDeck({ cards }) {
           />
         ))}
       </motion.ul>
+
+      <AnimatePresence>
+        {hint && (
+          <motion.p
+            key="hint"
+            className="deck__hint"
+            aria-hidden="true"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 1.4, duration: 0.6 } }}
+            exit={{ opacity: 0, y: 6, transition: { duration: 0.3 } }}
+          >
+            <svg className="deck__hint-arrow" viewBox="0 0 24 12" focusable="false">
+              <path d="M22 6H3M8 1.5 3 6l5 4.5" />
+            </svg>
+            <span className="deck__hint-mouse">Arrastra para ver las demás</span>
+            <span className="deck__hint-touch">Desliza para ver las demás</span>
+          </motion.p>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence onExitComplete={() => setLiftedId(null)}>
         {open && (

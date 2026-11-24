@@ -41,11 +41,10 @@ export default function AboutProject({ onReplay, onGoHome }) {
         <h1 className="about-page__title">{aboutProject.title}</h1>
 
         <div className="about-page__body">
-          {aboutProject.paragraphs.length > 0 ? (
-            aboutProject.paragraphs.map((text, i) => <p key={i}>{text}</p>)
-          ) : (
-            <p className="about-page__pending">{aboutProject.pending}</p>
-          )}
+          <p className="about-page__lead">{aboutProject.lead}</p>
+          {aboutProject.paragraphs.map((text, i) => (
+            <p key={i}>{text}</p>
+          ))}
         </div>
 
         <a className="pill about-page__back" href={HOME_HREF}>
