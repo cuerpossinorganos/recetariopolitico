@@ -1,0 +1,119 @@
+/* ---------- Carrusel ----------
+   Las cards se colocan en abanico alrededor de la del centro (ver CardDeck.jsx).
+   Medidas tomadas del diseño: a 1612 px de ancho la card del centro mide 273 px, está un poco a la
+   derecha del centro de la pantalla y su centro queda a 0.27 del ancho por debajo del borde de la mesa. */
+
+.deck {
+  --cx: 52%; /* dónde descansa la card del centro (ancho de la mesa) */
+  --cy: 26.9vw; /* y su altura, medida desde el borde de arriba de la mesa */
+  --pitch-ratio: 1.37; /* separación entre cards, en anchos de card */
+  --pitch: calc(var(--card-w) * var(--pitch-ratio));
+
+  position: absolute;
+  inset: 0;
+  z-index: 2; /* por encima de los lentes */
+  overflow-x: clip;
+}
+
+.deck__track {
+  position: absolute;
+  inset: 0;
+  list-style: none;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.deck__track:active {
+  cursor: grabbing;
+}
+
+/* La posición de cada card sale de su número (--i) respecto de la del centro (la 3.ª);
+   el giro, la altura y el orden de apilado los pone el JS según dónde esté mientras se arrastra */
+.deck__slot {
+  position: absolute;
+  left: calc(var(--cx) + (var(--i) - 2) * var(--pitch) - var(--card-w) / 2);
+  top: calc(var(--cy) - var(--card-w) / 0.507 / 2);
+  width: var(--card-w);
+}
+
+.deck__slot:hover,
+.deck__slot:focus-within {
+  z-index: 200 !important;
+}
+
+.deck__lift {
+  display: block;
+}
+
+/* ---------- Card ---------- */
+
+.deck__card {
+  --card-img: none;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border-radius: 6%;
+  cursor: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.deck__card:focus-visible {
+  outline: 2px solid #f2dfa1;
+  outline-offset: 6px;
+}
+
+.deck__card.is-lifted {
+  opacity: 0;
+}
+
+.deck__tilt {
+  position: relative;
+  display: block;
+  /* Sombra que respeta la silueta de la card: una de contacto y otra ambiente, suaves */
+  filter: drop-shadow(0 2px 2px rgba(26, 17, 2, 0.32)) drop-shadow(0 12px 14px rgba(26, 17, 2, 0.3));
+  transition: filter 0.35s ease;
+}
+
+.deck__slot:hover .deck__tilt,
+.deck__card:focus-visible .deck__tilt {
+  filter: drop-shadow(0 4px 3px rgba(26, 17, 2, 0.3)) drop-shadow(0 28px 26px rgba(26, 17, 2, 0.36));
+}
+
+.deck__tilt img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Grano de papel y brillo: ambos se recortan con la silueta de la card */
+.deck__grain,
+.deck__sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mask: var(--card-img) center / 100% 100% no-repeat;
+}
+
+.deck__grain {
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .32  0 0 0 0 .24  0 0 0 0 .1  0 0 0 .6 -.08'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+}
+
+.deck__sheen {
+  opacity: 0;
+  background: radial-gradient(
+    circle at var(--sx, 50%) var(--sy, 30%),
+    rgba(255, 248, 225, 0.34),
+    rgba(255, 248, 225, 0) 58%
+  );
+  transition: opacity 0.35s ease;
+}
+
+.deck__slot:hover .deck__sheen {
+  opacity: 1;
+}

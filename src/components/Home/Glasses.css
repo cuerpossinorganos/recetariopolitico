@@ -1,0 +1,40 @@
+/* Lentes sobre el mantel. Medidas del diseño a 1920 px (1 unidad = 1/1920 del ancho):
+   centro en (1714, 1120) respecto de la esquina de arriba de la mesa, 370 x 670. */
+
+.glasses {
+  position: absolute;
+  z-index: 1; /* sobre el mantel y debajo de las cards, para no estorbarles el puntero */
+  left: calc(var(--vw) * 1529);
+  top: calc(var(--vw) * 785);
+  width: calc(var(--vw) * 370);
+  pointer-events: none; /* solo responde la imagen de los lentes, no el rectángulo */
+  /* Sombra proyectada como la de las cards (una de contacto y otra más larga), más marcada porque cae sobre tela oscura */
+  filter: drop-shadow(0 4px 3px rgba(8, 5, 0, 0.6)) drop-shadow(0 18px 18px rgba(8, 5, 0, 0.55));
+  transition: filter 0.35s ease;
+}
+
+.glasses__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: auto;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Al rozarlos se despegan un poquito de la mesa y la sombra se alarga, como pasa con las cards */
+.glasses:hover {
+  filter: drop-shadow(0 8px 5px rgba(8, 5, 0, 0.5)) drop-shadow(0 34px 30px rgba(8, 5, 0, 0.55));
+}
+
+@media (max-width: 860px) {
+  /* En el celular la mesa es más ancha que la pantalla: los lentes se quedan en la esquina visible */
+  .glasses {
+    left: auto;
+    right: 3vw;
+    top: auto;
+    bottom: -21vw;
+    width: 26vw;
+  }
+}

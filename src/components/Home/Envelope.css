@@ -1,0 +1,58 @@
+/* ---------- Sobre con papeles ----------
+   La posición del sobre en la página la define Home.css. Aquí va todo lo de adentro.
+   Capas, de atrás hacia adelante: sobre abierto · papeles · solapa de adelante (translúcida). */
+
+/* La sombra va en el contenedor sin inclinar para que siempre caiga hacia abajo */
+.env-wrap {
+  filter: drop-shadow(0 calc(var(--vw) * 3) calc(var(--vw) * 4) rgba(26, 17, 2, 0.4))
+    drop-shadow(0 calc(var(--vw) * 22) calc(var(--vw) * 22) rgba(26, 17, 2, 0.34));
+}
+
+.env {
+  position: absolute;
+  inset: 0;
+  transform: rotate(15.38deg); /* inclinación del diseño */
+}
+
+.env__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.env__back {
+  z-index: 0;
+}
+
+.env__front {
+  z-index: 4; /* siempre por encima de los papeles */
+}
+
+.env__paper {
+  position: absolute;
+  display: block;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  /* Sombra de contacto: cada papel proyecta un poco sobre el de abajo */
+  filter: drop-shadow(0 calc(var(--vw) * 1.5) calc(var(--vw) * 2) rgba(40, 26, 6, 0.4));
+}
+
+.env__paper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.env__paper:focus-visible {
+  outline: 2px solid #efe1a6;
+  outline-offset: 4px;
+}

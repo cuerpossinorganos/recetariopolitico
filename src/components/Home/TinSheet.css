@@ -1,0 +1,44 @@
+/* Hoja de un objeto de la lata. Reutiliza el papel y el encabezado de StoryPaper.css. */
+
+.tin-sheet .story__in {
+  /* llena la pantalla aunque todavía tenga poco texto (el grano de papel cubre toda la hoja) */
+  min-height: calc(100dvh - var(--sheet-top, 14px) * 2);
+}
+
+.tin-sheet__head {
+  padding-top: calc(132 * var(--u));
+}
+
+.tin-sheet__head .story__num {
+  margin-left: calc(122 * var(--u));
+}
+
+.tin-sheet__body {
+  padding: calc(80 * var(--u)) calc(130 * var(--u)) 0 calc(122 * var(--u));
+}
+
+.tin-sheet__pending {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: calc(46 * var(--u));
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+@container (max-width: 880px) {
+  .tin-sheet__head {
+    padding: 7cqw var(--pad) 7cqw;
+  }
+
+  .tin-sheet__head .story__num {
+    margin-left: 0;
+  }
+
+  .tin-sheet__body {
+    padding: 8cqw var(--pad) 0;
+  }
+
+  .tin-sheet__pending {
+    font-size: clamp(18px, 5.4cqw, 24px);
+  }
+}

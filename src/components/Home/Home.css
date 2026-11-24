@@ -1,34 +1,380 @@
+/* Medidas del diseño a 1920 px de ancho: 1 unidad = var(--vw) = 1/1920 del ancho de la pantalla. */
+
 .home {
+  --vw: calc(100vw / 1920);
+  --cream: #f3e3af; /* ya compensa el grano de papel que oscurece un poco */
+  --ink: #1e1708;
+  --cloth-dark: #4f401c;
+  --cloth-light: #5d4e2a;
+  --stripe: clamp(26px, 1.98vw, 44px);
+  --card-w: clamp(150px, 17vw, 420px);
+
+  position: relative;
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  overflow: clip; /* lo que sobresale (cards fuera de pantalla, lentes, sombras) no agranda la página */
+  color: var(--cream);
+
+  /* Tela a rayas verticales, con la fase y los colores medidos en el diseño */
+  background-color: var(--cloth-dark);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--cloth-dark) 0,
+    var(--cloth-dark) calc(var(--stripe) * 0.26),
+    var(--cloth-light) calc(var(--stripe) * 0.36),
+    var(--cloth-light) calc(var(--stripe) * 0.74),
+    var(--cloth-dark) calc(var(--stripe) * 0.84),
+    var(--cloth-dark) var(--stripe)
+  );
+}
+
+/* Trama del tejido: hilos finos, apenas visibles */
+.home::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.5 .012' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .1  0 0 0 0 .07  0 0 0 0 0  0 0 0 .9 -.28'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.012 .5' numOctaves='2' seed='8' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .1  0 0 0 0 .07  0 0 0 0 0  0 0 0 .9 -.34'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
+}
+
+.home > main {
+  position: relative; /* por encima de la trama del tejido */
+}
+
+/* ---------- Encabezado ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
-.home h1 {
-  font-weight: 400;
-  font-size: clamp(2rem, 6vw, 4rem);
-}
-
-.home p {
-  color: var(--muted);
-}
-
-.home button {
-  margin-top: 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
+  height: clamp(60px, 6.77vw, 190px);
+  padding: 0 calc(var(--vw) * 55) 0 calc(var(--vw) * 62);
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 0 6px 18px rgba(20, 12, 0, 0.28);
+  font-family: var(--font-sans);
+  font-size: clamp(0.78rem, 1.4vw, 2.3rem);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--line);
+}
+
+.site-header__left {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 1.72vw, 2.2rem);
+  margin-top: calc(var(--vw) * 14); /* el texto del diseño queda un poco más abajo del centro */
+}
+
+.site-header__menu {
+  display: grid;
+  gap: 0.24em;
+  width: clamp(26px, 1.95vw, 44px);
+  padding: 0.4em 0;
+}
+
+.site-header__menu span {
+  display: block;
+  height: 1.5px;
+  background: var(--ink);
+  transition: transform 0.3s ease;
+}
+
+.site-header__menu:hover span:nth-child(1) {
+  transform: translateX(-12%);
+}
+
+.site-header__menu:hover span:nth-child(3) {
+  transform: translateX(12%);
+}
+
+.site-header__menu:focus-visible {
+  outline-color: var(--ink);
+}
+
+/* El monograma (SVG propio, con su color) */
+.site-header__monogram {
+  display: block;
+  width: clamp(48px, 5.77vw, 170px);
+  height: auto;
+  transform: translateX(calc(var(--vw) * 19)); /* en el diseño no está centrado del todo */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.site-header__title {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header__mark {
+  display: block;
+  line-height: 0;
+}
+
+.site-header__about[aria-current='page'] {
+  border-color: currentColor;
+}
+
+.site-header__about {
+  justify-self: end;
+  margin-top: calc(var(--vw) * 16);
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
   transition: border-color 0.3s;
 }
 
-.home button:hover {
-  border-color: var(--fg);
+.site-header__about:hover {
+  border-color: currentColor;
+}
+
+/* ---------- Portada ---------- */
+
+.hero {
+  padding-top: calc(var(--vw) * 76);
+  text-align: center;
+}
+
+.hero__logo {
+  width: 92.4vw;
+  margin: 0 auto;
+  aspect-ratio: 1595 / 316;
+  background-color: var(--cream);
+  mask: var(--mask-url) center / contain no-repeat;
+  /* Un poco de relieve: la tinta se asienta sobre la tela */
+  filter: drop-shadow(0 2px 0 rgba(20, 12, 0, 0.14));
+}
+
+.hero__lead {
+  max-width: max(44.3vw, 32rem);
+  margin: calc(var(--vw) * -66) auto 0;
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.275vw, 2.4rem);
+  line-height: 1.18;
+  color: #faedc2;
+  transform: translateX(calc(var(--vw) * 13)); /* centrado a mano, como en el diseño */
+}
+
+.pill {
+  display: inline-grid;
+  place-items: center;
+  height: clamp(2.8rem, 3.4vw, 6rem);
+  padding: 0 clamp(2rem, 3.85vw, 8rem);
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: clamp(0.9rem, 1.3vw, 2.4rem);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-shadow: 0 2px 0 rgba(20, 12, 0, 0.18), 0 6px 12px rgba(20, 12, 0, 0.14);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.pill:hover {
+  background: #f8e9b8;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgba(20, 12, 0, 0.25), 0 16px 24px rgba(20, 12, 0, 0.28);
+}
+
+.pill:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgba(20, 12, 0, 0.25), 0 6px 10px rgba(20, 12, 0, 0.25);
+}
+
+.pill--comenzar {
+  position: relative;
+  left: calc(var(--vw) * -8);
+  margin-top: calc(var(--vw) * 32);
+}
+
+.pill--about {
+  padding: 0 calc(var(--vw) * 40);
+}
+
+/* ---------- Mesa con las cards ---------- */
+
+.table {
+  position: relative;
+  z-index: 3;
+  margin-top: calc(var(--vw) * 86);
+}
+
+.table__stage {
+  position: relative;
+  /* La mesa nunca es más baja que las cards que descansan sobre ella */
+  min-height: calc(var(--card-w) * 2.85);
+}
+
+/* La blonda con el plato y los cubiertos: es la imagen del diseño, recortada con transparencia */
+.table__mantel {
+  display: block;
+  width: calc(var(--vw) * 1651);
+  height: auto;
+  margin-left: calc(var(--vw) * 142);
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 calc(var(--vw) * 3) calc(var(--vw) * 5) rgba(12, 8, 0, 0.3));
+}
+
+/* ---------- Sobre el proyecto ---------- */
+
+.about {
+  position: relative;
+  z-index: 2;
+  height: calc(var(--vw) * 1163); /* hasta donde empieza la zona de contenido */
+}
+
+.about__text {
+  position: absolute;
+  left: calc(var(--vw) * 192);
+  top: calc(var(--vw) * 198);
+  width: calc(var(--vw) * 872);
+}
+
+.about__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.76vw, 7rem);
+  line-height: 1.23;
+  color: #fff6d8;
+}
+
+.about__title span {
+  display: block;
+  white-space: nowrap;
+}
+
+.about__lead {
+  margin-top: calc(var(--vw) * 24);
+  font-family: var(--font-sans);
+  font-weight: 320;
+  font-size: clamp(0.92rem, 1.55vw, 2.8rem);
+  line-height: 1.21;
+  text-align: justify;
+  color: #fff2d2;
+}
+
+.about .pill--about {
+  margin: calc(var(--vw) * 51) 0 0 calc(var(--vw) * 7);
+}
+
+/* El sobre: centro en (1467, 2669) del diseño, 649 px de ancho */
+.about .env-wrap {
+  position: absolute;
+  z-index: 3;
+  left: calc(var(--vw) * 1142);
+  top: calc(var(--vw) * 480);
+  width: calc(var(--vw) * 649);
+  aspect-ratio: 1100 / 1364;
+}
+
+/* ---------- Pantallas chicas ---------- */
+
+@media (max-width: 860px) {
+  .home {
+    --card-w: 46vw;
+  }
+
+  /* En el celular se ve una card entera y un pedazo de las vecinas */
+  .deck {
+    --cx: 50%;
+    --cy: 66vw;
+    --pitch-ratio: 1.12;
+  }
+
+  .site-header__title {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 6vw;
+  }
+
+  .hero__logo {
+    width: 96vw;
+  }
+
+  .hero__lead {
+    max-width: 36ch;
+    margin: -3vw auto 0;
+    padding: 0 1.25rem;
+    font-size: 1rem;
+    text-wrap: balance;
+    transform: none;
+  }
+
+  .pill--comenzar {
+    left: 0;
+    margin-top: 1.4rem;
+  }
+
+  .site-header__monogram {
+    transform: none;
+  }
+
+  .site-header__left,
+  .site-header__about {
+    margin-top: 0;
+  }
+
+  .table {
+    margin-top: 12vw;
+  }
+
+  /* La blonda es más ancha que la pantalla: se ve la parte central y el borde de arriba y abajo */
+  .table__mantel {
+    width: 178vw;
+    margin-left: -39vw;
+  }
+
+  .about {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 24vw 7vw 0;
+  }
+
+  .about__text {
+    position: static;
+    width: auto;
+  }
+
+  .about__title {
+    font-size: clamp(1.8rem, 8vw, 3rem);
+  }
+
+  .about__title span {
+    display: inline;
+    white-space: normal;
+  }
+
+  .about__lead {
+    margin-top: 1.4rem;
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .about .pill--about {
+    margin: 1.8rem 0 0;
+    padding: 0 2rem;
+  }
+
+  /* El sobre va debajo del texto y se asoma sobre la zona de contenido */
+  .about .env-wrap {
+    --vw: calc(100vw / 1920 * 2.2); /* las sombras del sobre escalan con su tamaño */
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 72vw;
+    margin: 17vw auto -4vw;
+  }
 }

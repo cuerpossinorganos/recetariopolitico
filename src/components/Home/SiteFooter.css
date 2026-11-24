@@ -1,0 +1,147 @@
+/* Pie de página. Medidas del diseño a 1920 px (1u = 1/1920 del ancho, con mínimo y máximo). */
+
+.site-footer {
+  --u: clamp(0.62px, 0.052083vw, 1.3px);
+
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: calc(var(--u) * 365) minmax(0, calc(var(--u) * 820));
+  justify-content: space-between;
+  align-items: center;
+  column-gap: calc(var(--u) * 80);
+  min-height: calc(var(--u) * 413);
+  padding: calc(var(--u) * 52) calc(var(--u) * 72) calc(var(--u) * 26) calc(var(--u) * 100);
+  background: #44350e;
+  color: #f8f2e4;
+}
+
+/* El monograma, pintado en crema con CSS */
+.site-footer__mark {
+  display: block;
+  width: 100%;
+  aspect-ratio: 845.94 / 710.68;
+  background-color: #f4e6c1;
+  mask: var(--mask-url) center / contain no-repeat;
+}
+
+.site-footer__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: max(1.2rem, calc(var(--u) * 27));
+  line-height: 1.2;
+}
+
+.site-footer__text {
+  margin-top: calc(var(--u) * 10);
+  max-width: 44em;
+  font-family: var(--font-sans);
+  font-size: max(0.8rem, calc(var(--u) * 16));
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: rgba(248, 242, 228, 0.9);
+}
+
+.site-footer__form {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--u) * 24);
+  margin-top: calc(var(--u) * 42);
+  border-bottom: 1px solid #6f6030;
+  transition: border-color 0.3s ease;
+}
+
+.site-footer__form:focus-within {
+  border-color: #f4e6c1;
+}
+
+.site-footer__form input {
+  flex: 1;
+  min-width: 0;
+  padding: calc(var(--u) * 12) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #f8f2e4;
+  font-family: var(--font-sans);
+  font-size: max(0.8rem, calc(var(--u) * 16.5));
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.site-footer__form input::placeholder {
+  color: #8a7e66;
+  opacity: 1;
+}
+
+.site-footer__form button {
+  flex: none;
+  padding: calc(var(--u) * 12) 0;
+  font-family: var(--font-sans);
+  font-size: max(0.8rem, calc(var(--u) * 16.5));
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f8f2e4;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.site-footer__form button:hover:not(:disabled) {
+  color: #f4e6c1;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+.site-footer__form button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.site-footer__form button:focus-visible {
+  outline-color: #f4e6c1;
+}
+
+.site-footer__message {
+  min-height: 1.6em;
+  margin-top: calc(var(--u) * 14);
+  font-family: var(--font-sans);
+  font-size: max(0.8rem, calc(var(--u) * 15));
+  letter-spacing: 0.04em;
+  color: rgba(248, 242, 228, 0.85);
+}
+
+.site-footer__message[data-status='invalid'],
+.site-footer__message[data-status='failed'] {
+  color: #f0b99b;
+}
+
+.site-footer__rights {
+  grid-column: 1 / -1;
+  align-self: end;
+  margin-top: calc(var(--u) * 6);
+  font-family: var(--font-sans);
+  font-size: max(0.7rem, calc(var(--u) * 13));
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(248, 242, 228, 0.45);
+}
+
+@media (max-width: 860px) {
+  .site-footer {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.2rem;
+    padding: 3.2rem 1.5rem 2rem;
+  }
+
+  .site-footer__mark {
+    width: min(52vw, 14rem);
+  }
+
+  .site-footer__form {
+    margin-top: 1.8rem;
+  }
+
+  .site-footer__rights {
+    margin-top: 0.6rem;
+  }
+}

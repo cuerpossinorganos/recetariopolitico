@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import '@fontsource-variable/lora/wght.css'
 import '@fontsource-variable/lora/wght-italic.css'
 import '@fontsource-variable/dm-sans/wght.css'
+import '@fontsource-variable/dm-sans/wght-italic.css'
 import './index.css'
 import App from './App.jsx'
 

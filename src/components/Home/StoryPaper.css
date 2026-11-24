@@ -1,0 +1,773 @@
+/* Hoja de la historia. Medidas tomadas del PDF de la Ruda: el papel mide 1628 "unidades"
+   de ancho y todo se expresa en esas unidades (--u = 1/1628 del ancho del papel). */
+
+.story {
+  container-type: inline-size;
+  width: 100%;
+  background: #f4e6c1;
+}
+
+.story__in {
+  --u: calc(100cqw / 1628);
+  --ink: #705838;
+  --text: #786848;
+  --hand: #382810;
+  --box: #e2d0a8;
+  --line: #968363;
+  --hand-font: 'Recetario Mano', 'Lora Variable', cursive;
+  --hand-stroke: calc(0.9 * var(--u)); /* engrosa un poco la letra a mano */
+
+  position: relative;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: calc(30 * var(--u));
+  line-height: 1.2;
+  font-weight: 400;
+  text-align: left;
+  padding-bottom: calc(180 * var(--u));
+}
+
+:where(.story__in) :where(p, h2, h3, h4) {
+  margin: 0; /* especificidad 0: cualquier regla propia lo pisa */
+}
+
+/* Grano de papel, apenas perceptible */
+.story__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.32;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .34  0 0 0 0 .25  0 0 0 0 .1  0 0 0 .55 -.1'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 170px 170px;
+}
+
+/* ---------- Encabezado ---------- */
+
+/* En flujo normal para que un título largo pueda ocupar 2 o 3 líneas.
+   Con el título de la Ruda (1 línea) mide exactamente lo que en el PDF: 525 unidades. */
+.story__head {
+  position: relative;
+  padding: calc(166 * var(--u)) 0 calc(47 * var(--u));
+  border-bottom: calc(1.9 * var(--u)) solid var(--line);
+}
+
+.story__num {
+  margin-left: calc(131 * var(--u));
+  font-size: calc(30.6 * var(--u));
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+}
+
+.story__map {
+  position: absolute;
+  right: calc(73 * var(--u));
+  top: calc(166 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: calc(15 * var(--u));
+  font-size: calc(23.2 * var(--u));
+  letter-spacing: 0.17em;
+  color: var(--ink);
+}
+
+.story__map-icon {
+  width: calc(50 * var(--u));
+  height: auto;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 11;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.story__title {
+  margin: calc(66.5 * var(--u)) calc(130 * var(--u)) 0 calc(122 * var(--u));
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: calc(145.6 * var(--u) * var(--ts, 1)); /* los títulos muy largos bajan un poco */
+  line-height: 1;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.story__subtitle {
+  margin: calc(var(--sg, -5) * var(--u)) 0 0 calc(131 * var(--u));
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: calc(74 * var(--u) * var(--ss, 1)); /* los subtítulos largos bajan un poco para no partirse */
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* ---------- Nota + recuadro lateral ---------- */
+
+.story__body {
+  display: grid;
+  grid-template-columns: calc(899 * var(--u)) calc(479 * var(--u));
+  column-gap: calc(61 * var(--u));
+  align-items: start;
+  padding: calc(82 * var(--u)) calc(66 * var(--u)) calc(89 * var(--u)) calc(123 * var(--u));
+}
+
+.story__label {
+  font-size: calc(24.4 * var(--u));
+  line-height: 1;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.story__label--strong {
+  font-weight: 700;
+}
+
+.story__note .story__label {
+  margin-bottom: calc(29 * var(--u));
+}
+
+.story__note p,
+.story__steps li,
+.story__prose p,
+.story__box p {
+  /* El PDF comprime un poco el texto: se imita para que los renglones corten igual */
+  letter-spacing: -0.008em;
+  word-spacing: -0.045em;
+}
+
+.story__in strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.story__in em {
+  font-style: italic;
+}
+
+.story__in code {
+  font-family: 'Courier New', ui-monospace, monospace;
+  font-size: 0.92em;
+  letter-spacing: 0;
+}
+
+/* ___ : espacio en blanco para completar */
+.story__blank {
+  display: inline-block;
+  width: 5em;
+  margin: 0 0.35em;
+  border-bottom: calc(1.9 * var(--u)) solid currentColor;
+  transform: translateY(-0.12em);
+}
+
+.story__note p {
+  text-align: justify;
+}
+
+.story__note p + p {
+  margin-top: calc(36 * var(--u));
+}
+
+.story__note p + p.is-tight {
+  margin-top: 0;
+}
+
+.story__facts {
+  margin-top: calc(24 * var(--u));
+  padding: calc(44 * var(--u)) calc(35 * var(--u)) calc(58 * var(--u));
+  background: var(--box);
+}
+
+.story__facts dl {
+  margin: 0;
+}
+
+.story__facts dl > div + div {
+  margin-top: calc(30 * var(--u));
+}
+
+.story__facts dt {
+  padding-bottom: calc(10 * var(--u));
+  border-bottom: calc(1.6 * var(--u)) solid #b8a57f;
+  font-size: calc(24.4 * var(--u));
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.story__facts dd {
+  margin: calc(8 * var(--u)) 0 0;
+  font-family: var(--hand-font);
+  font-size: calc(36 * var(--u));
+  line-height: calc(37 * var(--u));
+  color: var(--hand);
+  white-space: pre-line;
+  -webkit-text-stroke: var(--hand-stroke) var(--hand);
+}
+
+/* ---------- Ingredientes ---------- */
+
+.story__ingredients {
+  position: relative;
+  padding: calc(68 * var(--u)) 0 calc(65 * var(--u)) calc(136 * var(--u));
+  border-top: calc(1.9 * var(--u)) solid var(--line);
+}
+
+.story__ingredients .story__label {
+  margin-bottom: calc(27 * var(--u));
+}
+
+.story__table {
+  width: calc(558 * var(--u));
+  border-collapse: collapse;
+  background: var(--box);
+}
+
+.story__table th,
+.story__table td {
+  padding: 0;
+  text-align: left;
+  font-weight: 400;
+}
+
+.story__table th {
+  padding: calc(29 * var(--u)) calc(34 * var(--u)) calc(22 * var(--u)) 0;
+  font-size: calc(18.7 * var(--u));
+  line-height: 1;
+  letter-spacing: 0.057em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: calc(1.6 * var(--u)) solid #c7b48e;
+}
+
+.story__table tr > :first-child {
+  padding-left: calc(34 * var(--u));
+  width: calc(253 * var(--u));
+}
+
+.story__table tr > :last-child {
+  text-align: center;
+  padding-right: calc(34 * var(--u));
+}
+
+.story__table td {
+  padding-top: calc(17 * var(--u));
+  padding-bottom: calc(15 * var(--u));
+  vertical-align: baseline;
+  border-bottom: calc(1.6 * var(--u)) solid #c7b48e;
+}
+
+.story__table tbody tr:last-child td {
+  border-bottom: 0;
+  padding-bottom: calc(22 * var(--u));
+}
+
+.story__table td:first-child {
+  font-size: calc(25.9 * var(--u));
+  line-height: 1.2;
+  color: var(--hand);
+}
+
+.story__table td:last-child {
+  font-family: var(--hand-font);
+  font-size: calc(35 * var(--u));
+  line-height: calc(30 * var(--u));
+  color: var(--hand);
+  white-space: pre-line;
+  -webkit-text-stroke: var(--hand-stroke) var(--hand);
+}
+
+.story__ing-note {
+  display: block;
+  margin-top: calc(5 * var(--u));
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: calc(23 * var(--u));
+  line-height: 1.25;
+  letter-spacing: 0;
+  color: var(--text);
+  -webkit-text-stroke: 0;
+}
+
+/* Con notas, la tabla necesita más ancho (no hay ilustración al lado) */
+.story__table--wide {
+  width: calc(880 * var(--u));
+}
+
+.story__flower {
+  position: absolute;
+  left: calc(583 * var(--u));
+  top: calc(-150 * var(--u));
+  width: calc(632 * var(--u));
+  height: auto;
+  pointer-events: none;
+}
+
+/* ---------- Preparación ---------- */
+
+.story__prep > * + * {
+  margin-top: calc(56 * var(--u));
+}
+
+.story__prep-label {
+  padding-left: calc(136 * var(--u));
+  margin-bottom: calc(26 * var(--u));
+}
+
+/* Rótulo chico (reparto, apéndice, "tres versiones de una frase"…) */
+.story__meta {
+  font-size: 0.7em;
+  letter-spacing: 0.05em;
+  color: #8a7757;
+}
+
+.story__steps-wrap > .story__meta {
+  padding-left: calc(136 * var(--u));
+  margin-bottom: calc(22 * var(--u));
+}
+
+.story__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0 calc(228 * var(--u)) 0 calc(282 * var(--u));
+}
+
+.story__steps li {
+  position: relative;
+}
+
+.story__steps li + li {
+  margin-top: calc(36 * var(--u));
+}
+
+/* Con muchos pasos cortos, que los números a mano no se pisen */
+.story__steps--dense li {
+  min-height: calc(60 * var(--u));
+}
+
+.story__step-num {
+  position: absolute;
+  left: calc((147 + var(--nx, 0) - 282) * var(--u));
+  top: calc((var(--ny, 20) - 17) * var(--u));
+  font-family: var(--hand-font);
+  font-size: calc(72 * var(--u));
+  line-height: 1;
+  color: var(--hand);
+  -webkit-text-stroke: var(--hand-stroke) var(--hand);
+}
+
+/* Apéndice que cuelga de un paso */
+.story__appendix {
+  margin-top: calc(20 * var(--u));
+  padding-left: calc(26 * var(--u));
+  border-left: calc(1.9 * var(--u)) solid var(--line);
+  font-size: 0.9em;
+  line-height: 1.25;
+}
+
+.story__appendix .story__meta {
+  margin-bottom: calc(6 * var(--u));
+}
+
+.story__appendix p + p {
+  margin-top: calc(10 * var(--u));
+}
+
+/* Texto corrido */
+.story__prose,
+.story__script,
+.story__box-wrap {
+  padding: 0 calc(405 * var(--u)) 0 calc(123 * var(--u));
+}
+
+.story__prose p {
+  text-align: justify;
+}
+
+.story__prose p + p {
+  margin-top: calc(36 * var(--u));
+}
+
+.story__prose p + p.is-tight {
+  margin-top: 0;
+}
+
+/* Pieza de teatro */
+.sc {
+  margin: 0;
+}
+
+.sc--label {
+  margin-top: calc(34 * var(--u));
+  font-size: 0.7em;
+  letter-spacing: 0.05em;
+  color: #8a7757;
+}
+
+.sc--cast {
+  margin-top: calc(8 * var(--u));
+}
+
+.sc--line {
+  margin-top: calc(6 * var(--u));
+  padding-left: calc(62 * var(--u));
+}
+
+.sc--dir {
+  margin-top: calc(30 * var(--u));
+  font-style: italic;
+  font-size: 0.96em;
+  line-height: 1.3;
+}
+
+.sc--act {
+  margin-top: calc(74 * var(--u));
+  font-size: 0.813em; /* = 24.4 unidades en escritorio */
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.sc--act + .sc--dir {
+  margin-top: calc(22 * var(--u));
+}
+
+.story__script > .sc:first-child {
+  margin-top: 0;
+}
+
+/* Dos recetas lado a lado */
+.story__recipes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 calc(228 * var(--u)) 0 calc(123 * var(--u));
+  border-top: calc(1.9 * var(--u)) solid var(--line);
+  border-bottom: calc(1.9 * var(--u)) solid var(--line);
+}
+
+.story__recipes section {
+  padding: calc(34 * var(--u)) calc(36 * var(--u)) calc(40 * var(--u));
+}
+
+.story__recipes section + section {
+  border-left: calc(1.9 * var(--u)) solid var(--line);
+}
+
+.story__recipes h4 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: calc(40 * var(--u));
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.story__recipe-by {
+  margin-top: calc(6 * var(--u)) !important;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: calc(27 * var(--u));
+  color: var(--ink);
+}
+
+.story__recipes ol {
+  list-style: none;
+  margin: calc(26 * var(--u)) 0 0;
+  padding: 0;
+}
+
+.story__recipes li {
+  display: grid;
+  grid-template-columns: calc(54 * var(--u)) 1fr;
+  align-items: baseline;
+  font-size: 0.93em;
+}
+
+.story__recipes li + li {
+  margin-top: calc(22 * var(--u));
+}
+
+.story__recipe-num {
+  font-family: var(--hand-font);
+  font-size: calc(46 * var(--u));
+  line-height: 1;
+  color: var(--hand);
+  -webkit-text-stroke: var(--hand-stroke) var(--hand);
+}
+
+/* Recuadro (advertencia, receta heredada…) */
+.story__box-wrap .story__label {
+  margin-bottom: calc(22 * var(--u));
+}
+
+.story__box {
+  padding: calc(34 * var(--u)) calc(40 * var(--u)) calc(38 * var(--u));
+  background: var(--box);
+}
+
+.story__box h4 {
+  margin: 0 0 calc(16 * var(--u));
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: calc(40 * var(--u));
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.story__box p + p {
+  margin-top: calc(16 * var(--u));
+}
+
+/* ---------- Sin historia cargada ---------- */
+
+.story__empty {
+  padding: calc(166 * var(--u)) calc(122 * var(--u)) calc(160 * var(--u));
+}
+
+.story__empty .story__num {
+  position: static;
+}
+
+.story__empty .story__title {
+  position: static;
+  margin-top: calc(60 * var(--u));
+  white-space: normal;
+  font-size: calc(110 * var(--u));
+  line-height: 1.05;
+}
+
+.story__empty-note {
+  margin-top: calc(70 * var(--u)) !important;
+}
+
+/* ---------- Pantallas angostas: una sola columna ---------- */
+
+@container (max-width: 880px) {
+  .story__in {
+    --pad: 6.4cqw;
+    font-size: clamp(15px, 4.4cqw, 19px);
+    padding-bottom: 12cqw;
+  }
+
+  .story__head {
+    padding: 7cqw var(--pad) 7cqw;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .story__map {
+    position: static;
+  }
+
+  .story__num {
+    margin: 0;
+    font-size: 4.2cqw;
+  }
+
+  .story__map {
+    font-size: 3.5cqw;
+    gap: 2cqw;
+  }
+
+  .story__map-icon {
+    width: 6.4cqw;
+  }
+
+  .story__title {
+    grid-column: 1 / -1;
+    margin: 6.5cqw 0 0;
+    font-size: 13.6cqw;
+    line-height: 1.02;
+  }
+
+  .story__subtitle {
+    grid-column: 1 / -1;
+    margin: 1.6cqw 0 0;
+    font-size: 7.4cqw;
+  }
+
+  .story__body {
+    display: block;
+    padding: 8cqw var(--pad) 9cqw;
+  }
+
+  .story__label {
+    font-size: clamp(12px, 3.3cqw, 15px);
+  }
+
+  .story__note .story__label {
+    margin-bottom: 4.5cqw;
+  }
+
+  .story__note p,
+  .story__prose p {
+    text-align: left;
+  }
+
+  .story__note p + p {
+    margin-top: 1.2em;
+  }
+
+  .story__facts {
+    margin-top: 9cqw;
+    padding: 6cqw 5.5cqw 7cqw;
+  }
+
+  .story__facts dl > div + div {
+    margin-top: 5cqw;
+  }
+
+  .story__facts dt {
+    padding-bottom: 1.6cqw;
+    font-size: clamp(12px, 3.3cqw, 15px);
+  }
+
+  .story__facts dd {
+    margin-top: 1.4cqw;
+    font-size: clamp(19px, 5.6cqw, 25px);
+    line-height: 1.18;
+  }
+
+  .story__ingredients {
+    padding: 8cqw var(--pad) 9cqw;
+  }
+
+  .story__ingredients .story__label {
+    margin-bottom: 4.5cqw;
+  }
+
+  .story__table,
+  .story__table--wide {
+    width: 100%;
+  }
+
+  .story__ing-note {
+    margin-top: 0.4em;
+    font-size: clamp(11px, 3.1cqw, 14px);
+    line-height: 1.25;
+  }
+
+  .story__table th {
+    padding: 4.6cqw 4cqw 3.4cqw 0;
+    font-size: clamp(11px, 2.9cqw, 13px);
+  }
+
+  .story__table tr > :first-child {
+    padding-left: 5cqw;
+    width: 46%;
+  }
+
+  .story__table tr > :last-child {
+    padding-right: 5cqw;
+  }
+
+  .story__table td {
+    padding-top: 2.8cqw;
+    padding-bottom: 2.6cqw;
+  }
+
+  .story__table td:first-child {
+    font-size: clamp(14px, 4cqw, 17px);
+  }
+
+  .story__table td:last-child {
+    font-size: clamp(19px, 5.4cqw, 24px);
+    line-height: 1.12;
+  }
+
+  .story__flower {
+    position: static;
+    display: block;
+    width: 62cqw;
+    margin: 4cqw auto -4cqw;
+  }
+
+  .story__prep > * + * {
+    margin-top: 9cqw;
+  }
+
+  .story__prep-label,
+  .story__steps-wrap > .story__meta {
+    padding-left: var(--pad);
+    margin-bottom: 4cqw;
+  }
+
+  .story__prose,
+  .story__script,
+  .story__box-wrap {
+    padding: 0 var(--pad);
+  }
+
+  .story__prose p + p {
+    margin-top: 1.2em;
+  }
+
+  .sc--line {
+    padding-left: 6cqw;
+  }
+
+  .story__recipes {
+    grid-template-columns: 1fr;
+    margin: 0 var(--pad);
+  }
+
+  .story__recipes section {
+    padding: 6cqw 0 7cqw;
+  }
+
+  .story__recipes section + section {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .story__recipes li {
+    grid-template-columns: 9cqw 1fr;
+  }
+
+  .story__recipe-num {
+    font-size: 7.4cqw;
+  }
+
+  .story__recipes h4 {
+    font-size: 5.8cqw;
+  }
+
+  .story__recipe-by {
+    font-size: 4cqw;
+  }
+
+  .story__box {
+    padding: 6cqw 6cqw 7cqw;
+  }
+
+  .story__box h4 {
+    font-size: 6.2cqw;
+  }
+
+  .story__appendix {
+    padding-left: 4cqw;
+  }
+
+  .story__steps {
+    padding: 4cqw var(--pad) 0;
+  }
+
+  .story__steps li {
+    padding-left: 13cqw;
+    min-height: 2.4em;
+  }
+
+  .story__steps li + li {
+    margin-top: 1.3em;
+  }
+
+  .story__step-num {
+    left: 0;
+    top: -0.1em;
+    font-size: 10.4cqw;
+  }
+}

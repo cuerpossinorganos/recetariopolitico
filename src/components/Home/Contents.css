@@ -1,0 +1,389 @@
+/* ---------- Zona "Contenido" ----------
+   Medidas del diseño a 1920 px: 1u = 1/1920 del ancho de la pantalla (con mínimo y máximo
+   para que en celular y en pantallas enormes siga siendo legible). */
+
+.contents {
+  --u: clamp(0.62px, 0.052083vw, 1.3px);
+
+  /* De día */
+  --c-bg: #f0ece0;
+  --c-title: #584022;
+  --c-label: #1a1208;
+  --c-text: #5c4a28;
+  --c-list: #6b5d3b;
+  --c-muted: #5d4d2d;
+  --c-line: rgba(88, 64, 34, 0.42);
+  --c-tab-off: rgba(92, 74, 40, 0.8);
+  --chip-bg: rgba(92, 74, 40, 0.2);
+  --chip-bg-hover: rgba(92, 74, 40, 0.3);
+  --chip-on-bg: #584022;
+  --chip-on-text: #f6ebc3;
+
+  position: relative;
+  z-index: 1; /* debajo del sobre, que se asoma sobre esta zona */
+  padding: calc(var(--u) * 45) calc(var(--u) * 38) 0;
+  background-color: var(--c-bg);
+  color: var(--c-title);
+  transition: background-color 0.7s ease, color 0.7s ease;
+  scroll-margin-top: 4rem;
+}
+
+/* De noche: la misma zona en su versión oscura */
+.contents[data-mode='night'] {
+  --c-bg: #15120c;
+  --c-title: #efe1a6;
+  --c-label: #f1e8cd;
+  --c-text: #e4d6a2;
+  --c-list: #cfc297;
+  --c-muted: #bfb085;
+  --c-line: rgba(239, 225, 166, 0.34);
+  --c-tab-off: rgba(239, 225, 166, 0.5);
+  --chip-bg: rgba(239, 225, 166, 0.14);
+  --chip-bg-hover: rgba(239, 225, 166, 0.24);
+  --chip-on-bg: #efe1a6;
+  --chip-on-text: #15120c;
+}
+
+.contents > *:not(.contents__glow) {
+  position: relative;
+}
+
+/* Resplandor de arriba: se funde con el fondo hacia abajo */
+.contents__glow {
+  position: absolute;
+  left: calc(var(--u) * 38);
+  right: calc(var(--u) * 38);
+  top: calc(var(--u) * 45);
+  height: calc(var(--u) * 900);
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.contents__glow--day {
+  background: linear-gradient(to bottom, #efe1a4, rgba(239, 225, 164, 0));
+}
+
+.contents__glow--night {
+  opacity: 0;
+  background: linear-gradient(to bottom, #3b3119, rgba(59, 49, 25, 0));
+}
+
+.contents[data-mode='night'] .contents__glow--day {
+  opacity: 0;
+}
+
+.contents[data-mode='night'] .contents__glow--night {
+  opacity: 1;
+}
+
+.contents__title {
+  margin-top: calc(var(--u) * 40);
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: calc(var(--u) * 87);
+  line-height: 1.15;
+  text-align: center;
+  color: var(--c-title);
+  transform: translateX(calc(var(--u) * -41)); /* el diseño lo tiene corrido a la izquierda */
+}
+
+/* ---------- Día / noche ---------- */
+
+.contents__mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 48);
+  margin-top: calc(var(--u) * 21);
+  transform: translateX(calc(var(--u) * -19));
+}
+
+.contents__mode-label {
+  font-family: var(--font-sans);
+  font-size: max(0.78rem, calc(var(--u) * 23.5));
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--c-label);
+  opacity: 0.7;
+  transition: opacity 0.4s ease, color 0.7s ease;
+}
+
+.contents__mode-label[aria-pressed='true'] {
+  opacity: 1;
+}
+
+.contents__mode-label:hover {
+  opacity: 1;
+}
+
+.contents__time {
+  position: absolute !important;
+  top: calc(var(--u) * 252);
+  right: calc(var(--u) * 132);
+  min-height: 1em;
+  font-family: var(--font-sans);
+  font-size: max(0.68rem, calc(var(--u) * 16.4));
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  transition: color 0.7s ease;
+}
+
+/* El interruptor */
+.tgl {
+  --track-w: calc(var(--u) * 118);
+  --knob: calc(var(--u) * 50);
+  --gap: calc(var(--u) * 5);
+
+  position: relative;
+  flex: none;
+  width: var(--track-w);
+  height: calc(var(--u) * 60);
+  padding: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e6e3dc, #f6f4ef 62%, #fbfaf6);
+  box-shadow:
+    inset 0 calc(var(--u) * 3) calc(var(--u) * 6) rgba(70, 55, 30, 0.3),
+    inset 0 calc(var(--u) * -2) calc(var(--u) * 3) rgba(255, 255, 255, 0.9),
+    0 0 0 calc(var(--u) * 2) rgba(226, 220, 205, 0.9);
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.contents[data-mode='night'] .tgl {
+  background: linear-gradient(180deg, #17161d, #2a2933 62%, #33323d);
+  box-shadow:
+    inset 0 calc(var(--u) * 3) calc(var(--u) * 7) rgba(0, 0, 0, 0.6),
+    inset 0 calc(var(--u) * -2) calc(var(--u) * 3) rgba(255, 255, 255, 0.07),
+    0 0 0 calc(var(--u) * 2) rgba(239, 225, 166, 0.22);
+}
+
+.tgl:focus-visible {
+  outline: 2px solid var(--c-text);
+  outline-offset: 5px;
+}
+
+.tgl svg {
+  display: block;
+  width: 56%;
+  height: 56%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Íconos grises en el riel: el que no está tapado por la bolita */
+.tgl__icon {
+  position: absolute;
+  top: var(--gap);
+  display: grid;
+  place-items: center;
+  width: var(--knob);
+  height: var(--knob);
+  color: #a8a59d;
+}
+
+.tgl__icon--sun {
+  left: var(--gap);
+}
+
+.tgl__icon--moon {
+  right: var(--gap);
+}
+
+.tgl__knob {
+  position: absolute;
+  top: var(--gap);
+  left: var(--gap);
+  display: block;
+  width: var(--knob);
+  height: var(--knob);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #fdcb73, #f0a030 62%, #de8416);
+  box-shadow:
+    0 calc(var(--u) * 3) calc(var(--u) * 6) rgba(130, 74, 0, 0.42),
+    inset 0 calc(var(--u) * 2) calc(var(--u) * 3) rgba(255, 255, 255, 0.55);
+  transition:
+    transform 0.6s cubic-bezier(0.34, 1.45, 0.5, 1),
+    background 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.contents[data-mode='night'] .tgl__knob {
+  transform: translateX(calc(var(--track-w) - var(--knob) - var(--gap) * 2));
+  background: radial-gradient(circle at 34% 28%, #ffffff, #d7dbea 60%, #aeb4cc);
+  box-shadow:
+    0 calc(var(--u) * 3) calc(var(--u) * 7) rgba(0, 0, 0, 0.55),
+    inset 0 calc(var(--u) * 2) calc(var(--u) * 3) rgba(255, 255, 255, 0.7);
+}
+
+.tgl__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+}
+
+.tgl__face--sun {
+  color: #fff;
+}
+
+.tgl__face--moon {
+  color: #4b4f6a;
+  opacity: 0;
+  transform: rotate(-40deg) scale(0.7);
+}
+
+.contents[data-mode='night'] .tgl__face--sun {
+  opacity: 0;
+  transform: rotate(60deg) scale(0.7);
+}
+
+.contents[data-mode='night'] .tgl__face--moon {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Carpeta con pestañas ---------- */
+
+.folder {
+  position: relative;
+  margin: calc(var(--u) * 33) calc(var(--u) * 101) 0 calc(var(--u) * 63);
+  padding-top: calc(var(--u) * 59);
+}
+
+.folder__outline {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.folder__outline path {
+  fill: none;
+  stroke: var(--c-line);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: stroke 0.7s ease;
+}
+
+.folder__tabs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--u) * 59);
+  z-index: 1;
+}
+
+.folder__tab {
+  position: absolute;
+  top: 0;
+  height: calc(var(--u) * 50);
+  padding-left: calc(var(--u) * 27);
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: max(0.85rem, calc(var(--u) * 24));
+  letter-spacing: 0.02em;
+  color: var(--c-tab-off);
+  transition: color 0.4s ease;
+}
+
+.folder__tab[aria-selected='true'] {
+  height: calc(var(--u) * 59);
+  color: var(--c-text);
+}
+
+.folder__tab:hover {
+  color: var(--c-text);
+}
+
+.folder__tab:focus-visible {
+  outline: 1px solid var(--c-text);
+  outline-offset: -4px;
+  border-radius: 8px;
+}
+
+.folder__panel {
+  position: relative;
+  min-height: max(24rem, calc(var(--u) * 640));
+  padding: calc(var(--u) * 56) calc(var(--u) * 55) calc(var(--u) * 60);
+}
+
+.panel__heading {
+  margin-bottom: calc(var(--u) * 19);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: max(0.95rem, calc(var(--u) * 25.4));
+  line-height: 1.1;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--c-text);
+  transition: color 0.7s ease;
+}
+
+.panel--recipes .panel__heading,
+.panel--tin .panel__heading {
+  margin-bottom: calc(var(--u) * 14);
+}
+
+.panel__list {
+  list-style: none;
+}
+
+.panel__list li {
+  font-family: var(--font-sans);
+  font-size: max(0.78rem, calc(var(--u) * 15.9));
+  line-height: calc(var(--u) * 29.5);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--c-list);
+  transition: color 0.7s ease;
+}
+
+.panel__empty {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: max(0.95rem, calc(var(--u) * 24));
+  color: var(--c-muted);
+  transition: color 0.7s ease;
+}
+
+/* ---------- Pantallas chicas ---------- */
+
+@media (max-width: 860px) {
+  .contents {
+    padding: calc(var(--u) * 45 + 12vw) 3vw 0; /* deja lugar para la esquina del sobre que se asoma */
+  }
+
+  .contents__glow {
+    top: calc(var(--u) * 45 + 4vw);
+    left: 3vw;
+    right: 3vw;
+  }
+
+  .contents__title,
+  .contents__mode {
+    transform: none;
+  }
+
+  .contents__time {
+    position: relative !important;
+    top: auto;
+    right: auto;
+    margin-top: 0.9rem;
+    text-align: center;
+  }
+
+  .contents__mode {
+    gap: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  .folder {
+    margin: 1.4rem 0 0;
+  }
+}

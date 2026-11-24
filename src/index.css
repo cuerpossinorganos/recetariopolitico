@@ -1,3 +1,12 @@
+/* Manuscrita propia: versión modificada de La Belle Aurore (SIL OFL 1.1). Ver src/assets/fonts/LEEME.txt */
+@font-face {
+  font-family: 'Recetario Mano';
+  src: url('./assets/fonts/recetario-mano.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Paleta medida de los mockups */
   --bg: #593e0f;
@@ -34,6 +43,11 @@ html,
 body,
 #root {
   min-height: 100%;
+}
+
+/* Los enlaces internos (#contenido, #sobre-el-proyecto) se deslizan en vez de saltar */
+html {
+  scroll-behavior: smooth;
 }
 
 /* Cuaderno cuadriculado */

@@ -1,0 +1,221 @@
+/* Hoja "La despensa". Reutiliza el papel, el encabezado y los colores de StoryPaper.css
+   (1 unidad = 1/1628 del ancho de la hoja). */
+
+.despensa__head {
+  padding-top: calc(132 * var(--u));
+}
+
+.despensa__head .story__title {
+  margin: 0 calc(130 * var(--u)) 0 calc(122 * var(--u));
+}
+
+.despensa__body {
+  padding: calc(70 * var(--u)) calc(110 * var(--u)) 0 calc(136 * var(--u));
+}
+
+.despensa__table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: var(--box);
+}
+
+.despensa__table th,
+.despensa__table td {
+  padding: 0;
+  text-align: left;
+  font-weight: 400;
+  vertical-align: top;
+}
+
+/* Encabezados de columna: igual que "Cantidad / Ingrediente" de las recetas */
+.despensa__table thead th {
+  padding: calc(29 * var(--u)) calc(30 * var(--u)) calc(22 * var(--u)) 0;
+  font-size: calc(18.7 * var(--u));
+  line-height: 1;
+  letter-spacing: 0.057em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: calc(1.6 * var(--u)) solid #c7b48e;
+}
+
+.despensa__table tr > :nth-child(1) {
+  width: 27%;
+  padding-left: calc(34 * var(--u));
+}
+
+.despensa__table tr > :nth-child(2) {
+  width: 15%;
+}
+
+.despensa__table tr > :nth-child(3) {
+  width: 29%;
+}
+
+.despensa__table tr > :nth-child(4) {
+  width: 29%;
+  padding-right: calc(34 * var(--u));
+}
+
+.despensa__table tbody th,
+.despensa__table tbody td {
+  padding-top: calc(24 * var(--u));
+  padding-bottom: calc(24 * var(--u));
+  padding-right: calc(30 * var(--u));
+  border-bottom: calc(1.6 * var(--u)) solid #c7b48e;
+}
+
+.despensa__table tbody tr:last-child th,
+.despensa__table tbody tr:last-child td {
+  border-bottom: 0;
+  padding-bottom: calc(34 * var(--u));
+}
+
+.despensa__table tbody th:first-child {
+  padding-left: calc(34 * var(--u));
+}
+
+.despensa__table tbody td:last-child {
+  padding-right: calc(34 * var(--u));
+}
+
+/* Planta: nombre en negrita y, debajo, el nombre científico en cursiva */
+.despensa__plant {
+  color: var(--hand);
+}
+
+.despensa__plant strong {
+  display: block;
+  font-size: calc(30 * var(--u));
+  line-height: 1.15;
+  color: var(--hand);
+}
+
+.despensa__plant em {
+  display: block;
+  margin-top: calc(5 * var(--u));
+  font-size: calc(23.5 * var(--u));
+  line-height: 1.25;
+  color: var(--text);
+}
+
+/* Se reconoce por: texto de la hoja */
+.despensa__notice {
+  font-size: calc(26 * var(--u));
+  line-height: 1.3;
+  color: var(--hand);
+}
+
+/* Origen y "se dice al darla": a mano, como lo que se anota en las recetas */
+.despensa__origin,
+.despensa__say {
+  font-family: var(--hand-font);
+  font-size: calc(36 * var(--u));
+  line-height: calc(39 * var(--u));
+  color: var(--hand);
+  -webkit-text-stroke: var(--hand-stroke) var(--hand);
+}
+
+.despensa__note {
+  max-width: calc(1180 * var(--u));
+  margin-top: calc(46 * var(--u));
+  font-style: italic;
+  font-size: calc(28 * var(--u));
+  line-height: 1.35;
+  color: var(--text);
+}
+
+/* ---------- Pantallas angostas: cada planta es un bloque ---------- */
+
+@container (max-width: 880px) {
+  .despensa__head {
+    padding: 7cqw var(--pad) 7cqw;
+  }
+
+  .despensa__head .story__title {
+    margin: 0;
+  }
+
+  .despensa__body {
+    padding: 7cqw var(--pad) 0;
+  }
+
+  /* Los encabezados de columna se leen dentro de cada bloque */
+  .despensa__table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .despensa__table,
+  .despensa__table tbody,
+  .despensa__table tr,
+  .despensa__table tbody th,
+  .despensa__table tbody td {
+    display: block;
+    width: auto;
+  }
+
+  .despensa__table {
+    background: none;
+  }
+
+  .despensa__table tbody tr {
+    padding: 5cqw 5.5cqw 5.5cqw;
+    background: var(--box);
+  }
+
+  .despensa__table tbody tr + tr {
+    margin-top: 3.2cqw;
+  }
+
+  .despensa__table tbody tr > :nth-child(n),
+  .despensa__table tbody tr:last-child > :nth-child(n) {
+    width: auto;
+    padding: 0;
+    border: 0;
+  }
+
+  .despensa__table tbody td {
+    margin-top: 3.4cqw;
+  }
+
+  .despensa__table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.6cqw;
+    font-family: var(--font-sans);
+    font-size: clamp(11px, 2.9cqw, 13px);
+    line-height: 1;
+    letter-spacing: 0.057em;
+    text-transform: uppercase;
+    -webkit-text-stroke: 0;
+    color: var(--ink);
+  }
+
+  .despensa__plant strong {
+    font-size: clamp(17px, 5cqw, 22px);
+  }
+
+  .despensa__plant em {
+    font-size: clamp(12px, 3.4cqw, 15px);
+  }
+
+  .despensa__notice {
+    font-size: clamp(14px, 4cqw, 17px);
+  }
+
+  .despensa__origin,
+  .despensa__say {
+    font-size: clamp(19px, 5.4cqw, 24px);
+    line-height: 1.15;
+  }
+
+  .despensa__note {
+    max-width: none;
+    margin-top: 6cqw;
+    font-size: clamp(14px, 4cqw, 17px);
+  }
+}

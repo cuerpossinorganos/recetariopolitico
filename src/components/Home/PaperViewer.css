@@ -1,0 +1,76 @@
+.pv {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+
+.pv__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 14, 3, 0.8);
+  backdrop-filter: blur(3px);
+  cursor: zoom-out;
+}
+
+/* Mientras el papel viaja, el contenedor no hace scroll; al llegar, sí (hacia abajo) */
+.pv__scroller {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  outline: none;
+  cursor: zoom-out;
+  scrollbar-width: none;
+}
+
+.pv__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.pv__scroller.is-reading {
+  overflow-y: auto;
+}
+
+.pv__sheet {
+  margin-left: auto;
+  margin-right: auto;
+  cursor: auto;
+  /* Sombra con la silueta del papel (tiene esquinas y perforaciones) */
+  filter: drop-shadow(0 3px 3px rgba(26, 17, 2, 0.35)) drop-shadow(0 30px 40px rgba(10, 6, 0, 0.5));
+}
+
+.pv__sheet img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pv__close {
+  position: absolute;
+  top: clamp(1rem, 2.4vw, 2rem);
+  right: clamp(1rem, 2.4vw, 2rem);
+  z-index: 2;
+  padding: 0.55rem 1.3rem;
+  border-radius: 999px;
+  background: #efe1a6;
+  color: #1e1708;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 18px rgba(10, 6, 0, 0.4);
+}
+
+.pv__close:hover {
+  background: #f8e9b8;
+}
+
+@media (max-width: 720px) {
+  .pv__close {
+    top: auto;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    right: 1rem;
+  }
+}

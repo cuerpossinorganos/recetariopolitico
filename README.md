@@ -18,14 +18,26 @@ npm run lint
 - `src/data/copy.js`: textos de interfaz (botones, pistas).
 - `src/components/Intro/`: pantalla de carga/entrada (`Gate`), motor de slides (`Intro`), slide (`Slide`) y animación del texto por líneas (`LineReveal`).
 - `src/components/Menu/`: menú de capítulos en forma de ticket.
-- `src/components/Home/`: página de inicio (provisoria).
+- `src/components/Home/`: página de inicio (`Home`), de arriba a abajo: encabezado, portada, mesa con la blonda y las 7 cards (`CardDeck`, visor que voltea y amplía la card `CardViewer`, hoja con la historia `StoryPaper`), lentes (`Glasses`, solo se mueven al pasar el puntero), "Sobre el proyecto" con el sobre y sus dos papeles (`Envelope` + `PaperViewer`) la zona Contenido con el switch día / noche (`Contents`; en la pestaña 01 de día van las recetas con filtros por categoría, `RecipeBrowser`; en la 02, la lata de galletas con sus cuatro objetos, `TinBrowser` + `Tin` + `TinSheet`) y el pie de página con la suscripción (`SiteFooter`).
+- `src/components/About/`: página aparte "Sobre el proyecto" (`AboutProject`). Su texto está en `src/data/about.js` (**pendiente**: hoy muestra un aviso). El encabezado (`Home/SiteHeader`) es el mismo en las dos páginas.
+- `src/data/papers.js`: los dos papeles del sobre (imagen, posición dentro del sobre, cuánto salen al abrirse) y las medidas del sobre. Al abrirse, cada papel se voltea como una card y muestra su hoja con el diseño de las recetas: "Permiso de Puesto Fijo" (`PermisoSheet`, texto en `src/data/stories/permiso.js`, del PDF) y "La despensa" (`DespensaSheet`, texto en `src/data/despensa.js`).
+- `src/data/tin.js`: la lata de galletas. Las imágenes están en `src/assets/home/lata/`. La lata CERRADA (`lata-cerrada.webp`) y la cara de cada objeto al sacarlo (`lata-<objeto>-cara.webp`) son las ilustraciones propias del cliente (de `elementos.jpg` y la lata cerrada, recortadas del fondo de papel). La lata ABIERTA se armó por capas a partir de un solo PNG (`lata de galletas.png`): cuerpo, banda, tapa y el recorte de cada objeto dentro de la lata; al abrir, la lata cerrada se funde con esas capas y la tapa se desliza. Si llegan las capas originales de la lata abierta, basta con cambiar esas imágenes y ajustar `lidClosed` / `closedShift` / `closedImage`. El texto de cada hoja está pendiente (`TinSheet`).
+- `src/data/footer.js` y `src/services/subscribe.js`: textos del pie de página y envío del correo. **Pendiente**: `subscribe` solo simula la respuesta, hay que conectarlo con el servicio de correo del proyecto.
+- `src/data/contents.js`: lo que muestra la zona Contenido en cada modo (día / noche): pestañas, listas y minutos de lectura. **Pendiente**: la lista de la noche y la pestaña 02.
+- `src/data/cards.js`: las 7 cards (número, título e imagen recortada a su silueta).
+- `src/data/stories/`: la historia de cada planta (cara de atrás de la card), un archivo por planta con el texto extraído del PDF. `index.js` explica el formato (hechos, nota, ingredientes y bloques de preparación: pasos, texto corrido, teatro, dos recetas, recuadros) y los asocia con el id de cada card.
 - `src/audio/` y `src/hooks/useAmbientSound.js`: sonido ambiente.
 - `src/components/ui/`: logo (`Logo`) y logo con movimiento de viento para la pantalla de carga (`SwayingLogo`, WebGL; la intensidad se ajusta con `AMPLITUDE`).
-- `src/assets/logo.png`: logo (PNG con transparencia); se pinta con CSS del color que haga falta.
+- `src/assets/`: `logo.png` (vertical, intro), `logo-horizontal.svg` (portada), `monogram.svg` (encabezado y favicon), `cards/` (WebP) y `home/` (blonda con plato y cubiertos `mantel.webp`, sobre en dos capas `sobre-fondo` / `sobre-frente`, papeles, lentes). Los logos se pintan con CSS del color que haga falta.
+- `public/`: favicon (`favicon.svg` con el monograma, más PNG de 32, 192 y el `apple-touch-icon`).
 
-Etapas en `src/App.jsx`: `gate` → `intro` → `home`.
+Etapas en `src/App.jsx`: `gate` → `intro` → `home`. Las páginas se eligen por el hash de la dirección: `#/sobre-el-proyecto` abre la página aparte (sin pasar por la intro) y cualquier otra cosa es el inicio; así funciona en cualquier hosting estático.
 
 ## Diseño
+
+- Las cards se acomodan en abanico alrededor de la 003 (`CardDeck.jsx`: `arcRotate` / `arcLift` y las variables `--cx`, `--cy`, `--pitch-ratio` de `CardDeck.css`). Al arrastrar, el abanico rueda y la card más cercana queda en el centro.
+- El inicio se maqueta con las medidas del diseño a 1920 px (`--vw` = 1/1920 del ancho de pantalla) y se reacomoda en una columna por debajo de 860 px.
+- La blonda del fondo (`home/mantel.webp`) sale del diseño: se recortó con transparencia y se reconstruyó la esquina que tapaban los lentes. Para más nitidez en pantallas grandes conviene reemplazarla por la ilustración original en alta resolución.
 
 - Tipografías: Lora (OFL) y DM Sans, empaquetadas con `@fontsource-variable`.
 - Paleta: fondo `#593e0f`, cuadrícula `#4b350c`, crema `#f6dea0`, marrón del menú `#584038`.

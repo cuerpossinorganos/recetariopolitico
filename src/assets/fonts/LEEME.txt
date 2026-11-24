@@ -1,0 +1,13 @@
+recetario-mano.woff2 — "Recetario Mano"
+
+Versión modificada de "La Belle Aurore", de Kimberly Geswein (c) 2010,
+licenciada bajo la SIL Open Font License 1.1 (texto completo en OFL-LaBelleAurore.txt).
+
+Cambios respecto de la original: ascendentes y descendentes más largas (b d f h k l t / g j p q y),
+bucles de g, q, y más abiertos, mayor altura de x en minúsculas, mayúsculas y números
+redibujados, espaciado un poco más abierto y sin instrucciones de hinting.
+
+La licencia permite usarla, incrustarla y modificarla (incluso en proyectos comerciales)
+siempre que: (1) se conserve el aviso de copyright y la licencia, (2) la versión modificada
+no use el nombre reservado de la original (por eso se llama "Recetario Mano"), y
+(3) la fuente no se venda por sí sola.
